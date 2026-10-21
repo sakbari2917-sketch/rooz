@@ -1,0 +1,1695 @@
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="روز خوب">
+<meta name="theme-color" content="#0e7c7b">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+
+<style>
+/* در حالت تمام‌صفحه، بالای صفحه زیر ساعت و باتری می‌افتد */
+@supports (padding-top: env(safe-area-inset-top)) {
+  header { padding-top: calc(.6rem + env(safe-area-inset-top)); }
+}
+/* کشیده شدن لاستیکیِ کل صفحه در سافاری، که در حالت اپ زشت است */
+html, body { overscroll-behavior: none; }
+/* برق آبیِ لمس روی دکمه‌ها */
+* { -webkit-tap-highlight-color: transparent; }
+</style>
+<script>window.SK_BAZ = true;</script>
+<title>روز سعد و نحس</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&family=Gulzar&display=swap">
+<style>
+:root{
+  --base:16px;
+  --kaghaz:#f7f3e8; --kaghaz2:#fffdf7; --khat:#ddd3bd;
+  --morakkab:#1f2a44; --morakkab2:#5b6379;
+  --firooze:#0e7c7b; --tala:#a8791c;
+  --sabz:#2e7d4f; --zard:#c8971d; --sorkh:#a82f28;
+  --sabz-kam:#dbeade; --sorkh-kam:#f2dbd9;
+  --sayeh:rgba(31,42,68,.08);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --kaghaz:#131a2b; --kaghaz2:#1b2337; --khat:#2e3850;
+  --morakkab:#ece4d2; --morakkab2:#9aa3b8;
+  --firooze:#4bb5b0; --tala:#d4a63c;
+  --sabz:#54b37a; --zard:#e0b44a; --sorkh:#e0685c;
+  --sabz-kam:#1d3a2b; --sorkh-kam:#3b2222;
+  --sayeh:rgba(0,0,0,.35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --kaghaz:#131a2b; --kaghaz2:#1b2337; --khat:#2e3850;
+  --morakkab:#ece4d2; --morakkab2:#9aa3b8;
+  --firooze:#4bb5b0; --tala:#d4a63c;
+  --sabz:#54b37a; --zard:#e0b44a; --sorkh:#e0685c;
+  --sabz-kam:#1d3a2b; --sorkh-kam:#3b2222;
+  --sayeh:rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{font-size:var(--base)}
+html,body{height:100%}
+body{margin:0;background:var(--kaghaz);color:var(--morakkab);
+  font-family:Vazirmatn,system-ui,sans-serif;font-size:1rem;line-height:1.75;
+  direction:rtl;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+#app{display:flex;flex-direction:column;height:100%;max-width:36rem;margin:0 auto;
+  background:var(--kaghaz)}
+
+header{flex:0 0 auto;background:var(--kaghaz2);border-bottom:1px solid var(--khat);
+  padding:.6rem 1rem .75rem}
+.marz{height:3px;background:repeating-linear-gradient(90deg,
+  var(--firooze) 0 8px,var(--tala) 8px 12px,var(--firooze) 12px 20px);
+  opacity:.75;margin:-.6rem -1rem .65rem}
+.navrow{display:flex;align-items:center;gap:.5rem}
+.nav{background:none;border:1px solid var(--khat);color:var(--morakkab2);
+  border-radius:.55rem;min-width:2.15rem;height:2.15rem;font-size:1.05rem;
+  cursor:pointer;flex:0 0 auto;font-family:inherit;line-height:1;padding:0 .2rem}
+.nav:hover{border-color:var(--firooze);color:var(--firooze)}
+.nav:disabled{opacity:.3;cursor:default}
+.nav.on{border-color:var(--firooze);color:var(--firooze)}
+/* انتخاب‌نشدنی: روی این جاها ده ثانیه نگه داشته می‌شود و اگر متن انتخاب
+   شود یا منوی «کپی» اندروید بالا بیاید، نگه داشتن قطع می‌شود. */
+.nav,.dates,.banner{-webkit-user-select:none;user-select:none;
+  -webkit-touch-callout:none}
+.dates{flex:1 1 auto;text-align:center;min-width:0}
+.d1{font-size:1.2rem;font-weight:700;letter-spacing:-.2px}
+.d2{font-size:.84rem;color:var(--morakkab2);margin-top:1px}
+.today-btn{font-size:.78rem;padding:0 .6rem;white-space:nowrap}
+
+.settings{margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--khat);
+  display:flex;flex-direction:column;gap:.5rem}
+.settings[hidden]{display:none}
+.srow{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.srow>b{font-size:.8rem;font-weight:500;color:var(--morakkab2);flex:0 0 4.6rem}
+.srow button{background:var(--kaghaz);border:1px solid var(--khat);
+  border-radius:.45rem;padding:.25rem .6rem;font-size:.8rem;font-family:inherit;
+  color:var(--morakkab2);cursor:pointer}
+.srow button.on{background:var(--firooze);border-color:var(--firooze);color:#fff}
+.srow select,.srow input{background:var(--kaghaz);border:1px solid var(--khat);
+  border-radius:.45rem;padding:.3rem .5rem;font-size:.85rem;font-family:inherit;
+  color:var(--morakkab);min-width:0}
+
+/* نوار وضعیت دوره‌ی آزمایشی */
+.vaziat{margin-top:.55rem;padding:.3rem .7rem;border-radius:.45rem;
+  font-size:.78rem;text-align:center;
+  background:var(--sabz-kam);color:var(--sabz);border:1px solid var(--sabz)}
+.vaziat.tamam{background:var(--sorkh-kam);color:var(--sorkh);border-color:var(--sorkh)}
+.vaziat[hidden]{display:none}
+
+/* صفحه‌ی قفل */
+.ghofl{text-align:center;padding:1.6rem .4rem}
+.ghofl-neshan{width:3.4rem;height:3.4rem;margin:0 auto .9rem;border-radius:50%;
+  background:var(--kaghaz2);border:2px solid var(--tala);color:var(--tala);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.ghofl h2{margin:0 0 .5rem;font-size:1.2rem}
+.ghofl p{margin:0 auto 1.3rem;font-size:.92rem;line-height:1.95;max-width:26rem;
+  color:var(--morakkab2)}
+.ghofl-do{display:flex;gap:.6rem;text-align:right;margin-bottom:1.4rem}
+.ghofl-do>div{flex:1 1 0;border:1px solid var(--khat);border-radius:.75rem;
+  padding:.7rem .85rem;background:var(--kaghaz2)}
+.ghofl-do b{display:block;font-size:.8rem;margin-bottom:.35rem}
+.ghofl-do .baz b{color:var(--sabz)}
+.ghofl-do .baste b{color:var(--tala)}
+.ghofl-do ul{margin:0;padding-right:1.05rem;font-size:.82rem;line-height:1.95;
+  color:var(--morakkab2)}
+.kharid{background:var(--firooze);color:#fff;border:0;border-radius:.6rem;
+  padding:.65rem 1.6rem;font-family:inherit;font-size:.95rem;font-weight:500;
+  cursor:pointer}
+
+/* صفحه‌ی مدیر (پشت کلید مخفی) */
+.adm{padding:.3rem 0 1rem}
+.adm>h2{margin:.9rem 0 .3rem;font-size:1.15rem}
+.adm>p.zir{margin:0 0 .4rem;font-size:.82rem;line-height:1.9;color:var(--morakkab2)}
+.abox{border:1px solid var(--khat);border-radius:.85rem;background:var(--kaghaz2);
+  padding:.85rem .95rem;margin-top:.9rem}
+.abox h4{margin:0 0 .55rem;font-size:.95rem;font-weight:700}
+.abox p{margin:0 0 .65rem;font-size:.83rem;line-height:1.9;color:var(--morakkab2)}
+.akey{display:flex;gap:.5rem;align-items:center}
+.akey input{flex:1 1 7rem;background:var(--kaghaz);border:1px solid var(--khat);
+  border-radius:.5rem;padding:.5rem .6rem;font-family:inherit;font-size:1.2rem;
+  text-align:center;letter-spacing:.3rem;color:var(--morakkab);min-width:0}
+.akey button{flex:0 0 auto;background:var(--firooze);color:#fff;border:0;
+  border-radius:.5rem;padding:.55rem 1.1rem;font-family:inherit;font-size:.9rem;
+  cursor:pointer}
+.apayam{margin:.65rem 0 0;font-size:.85rem;line-height:1.9}
+.apayam.ok{color:var(--sabz)} .apayam.no{color:var(--sorkh)}
+.afeh{display:grid;grid-template-columns:auto 1fr;gap:.2rem .8rem;font-size:.84rem;
+  line-height:1.9}
+.afeh b{font-weight:500;color:var(--morakkab2);white-space:nowrap}
+.abtns{display:flex;gap:.5rem;flex-wrap:wrap}
+.abtns button{background:var(--kaghaz);border:1px solid var(--khat);
+  border-radius:.5rem;padding:.4rem .85rem;font-family:inherit;font-size:.84rem;
+  color:var(--morakkab);cursor:pointer}
+.abtns button.khatar{border-color:var(--sorkh);color:var(--sorkh)}
+
+main{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:0 1rem 1.5rem}
+
+.banner{margin:.9rem 0 .25rem;padding:.9rem 1rem;border-radius:.9rem;color:#fff;
+  box-shadow:0 2px 10px var(--sayeh)}
+.banner h2{margin:0;font-size:1.15rem;font-weight:700;text-wrap:balance}
+.banner p{margin:.35rem 0 0;font-size:.88rem;opacity:.93}
+.banner .nomre{font-size:.74rem;opacity:.75;margin-top:.45rem;letter-spacing:.3px}
+
+.aseman{display:flex;flex-wrap:wrap;gap:.45rem;margin:.75rem 0 .1rem}
+.chip{background:var(--kaghaz2);border:1px solid var(--khat);border-radius:999px;
+  padding:.2rem .7rem;font-size:.8rem;color:var(--morakkab2)}
+.chip b{color:var(--morakkab);font-weight:500}
+
+h3.sec{font-size:.75rem;letter-spacing:1.4px;color:var(--morakkab2);
+  font-weight:500;margin:1.35rem 0 .15rem}
+
+/* اوقات شرعی */
+.owghat{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.3rem}
+.owghat div{background:var(--kaghaz2);border:1px solid var(--khat);
+  border-radius:.6rem;padding:.5rem .3rem;text-align:center}
+.owghat span{display:block;font-size:.72rem;color:var(--morakkab2)}
+.owghat b{display:block;font-size:1.02rem;font-weight:500;margin-top:.1rem}
+
+/* ستاره */
+.sekiz{display:flex;gap:.9rem;align-items:center;margin-top:.25rem;
+  padding:.8rem .9rem;border:1px solid var(--khat);border-radius:.85rem;
+  background:var(--kaghaz2)}
+.sekiz.none{display:block;color:var(--morakkab2);font-size:.85rem;line-height:1.85}
+.sekiz svg{flex:0 0 7.2rem;width:7.2rem;height:7.2rem}
+.sekiz .txt{flex:1 1 auto;min-width:0}
+.sekiz .jahat{font-size:1.05rem;font-weight:700;color:var(--firooze);
+  line-height:1.5;text-wrap:balance}
+.sekiz .dast{font-size:.85rem;margin-top:.3rem;line-height:1.8}
+.sekiz .hok{font-size:.8rem;color:var(--morakkab2);margin-top:.45rem;line-height:1.8}
+.sekiz .info{background:none;border:0;color:var(--firooze);font-family:inherit;
+  font-size:.78rem;cursor:pointer;padding:.3rem 0 0}
+.gol{fill:var(--khat)} .gol.on{fill:var(--firooze)}
+.golx{fill:none;stroke:var(--khat);stroke-width:1}
+.gollb{fill:var(--morakkab2);font-size:13px;font-family:Vazirmatn,sans-serif}
+.golmid{fill:var(--morakkab);font-size:15px;font-weight:700;font-family:Vazirmatn,sans-serif}
+
+/* دسته‌ها */
+.dlist{border-top:1px solid var(--khat)}
+.drow{display:flex;align-items:center;gap:.75rem;padding:.68rem .15rem;
+  border-bottom:1px solid var(--khat);cursor:pointer;background:none;
+  border-right:0;border-left:0;width:100%;font-family:inherit;font-size:.95rem;
+  color:inherit;text-align:right}
+.drow:hover{background:var(--kaghaz2)}
+.dname{flex:0 0 6.3rem;font-weight:500}
+.dbar{flex:1 1 auto;height:.45rem;border-radius:.3rem;background:var(--khat);
+  position:relative;overflow:hidden}
+.dbar i{position:absolute;top:0;bottom:0;border-radius:.3rem;display:block}
+.dstate{flex:0 0 3.2rem;text-align:left;font-size:.8rem;color:var(--morakkab2)}
+.dstate.k{color:var(--sabz)} .dstate.b{color:var(--sorkh)}
+
+/* ساعات */
+.hnow{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap;
+  padding:.6rem .75rem;border:1px solid var(--khat);border-radius:.75rem;
+  background:var(--kaghaz2);margin-top:.25rem;font-size:.88rem}
+.dot{width:.6rem;height:.6rem;border-radius:50%;display:inline-block;flex:0 0 auto}
+.hstrip{display:flex;gap:2px;margin-top:.55rem}
+.hstrip span{flex:1 1 0;height:1.6rem;border-radius:.25rem;opacity:.55}
+.hstrip span.on{opacity:1;outline:2px solid var(--morakkab);outline-offset:1px}
+.hlist{margin-top:.55rem;font-size:.85rem}
+.hlist[hidden]{display:none}
+.hlist div{display:flex;gap:.55rem;align-items:center;padding:.25rem 0;
+  border-bottom:1px solid var(--khat)}
+.hlist b{font-weight:500;flex:0 0 3.4rem}
+.hlist em{font-style:normal;color:var(--morakkab2);flex:1 1 auto}
+.more{background:none;border:0;color:var(--firooze);font-family:inherit;
+  font-size:.82rem;cursor:pointer;padding:.4rem 0}
+
+/* تقویم ماه */
+.mnav{display:flex;align-items:center;gap:.5rem;padding:.85rem 0 .1rem}
+.mnav .mtitle{flex:1 1 auto;text-align:center;font-size:1.05rem;font-weight:500}
+.chips{display:flex;gap:.35rem;overflow-x:auto;padding:.7rem 0 .6rem;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:0 0 auto;background:var(--kaghaz2);border:1px solid var(--khat);
+  border-radius:999px;padding:.28rem .8rem;font-size:.84rem;font-family:inherit;
+  color:var(--morakkab2);cursor:pointer;white-space:nowrap}
+.chips button.on{background:var(--firooze);border-color:var(--firooze);color:#fff}
+.mhead{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem;
+  font-size:.72rem;color:var(--morakkab2);text-align:center;padding-bottom:.3rem}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem}
+.cell{aspect-ratio:1/1;border-radius:.55rem;border:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:inherit;font-size:.92rem;font-weight:500;color:#12151f;
+  line-height:1.2;padding:0}
+.cell.empty{background:none;cursor:default}
+.cell small{font-size:.62rem;opacity:.7;font-weight:400}
+.cell.sel{outline:2.5px solid var(--morakkab);outline-offset:1px}
+.legend{display:flex;align-items:center;gap:.5rem;margin-top:.9rem;
+  font-size:.75rem;color:var(--morakkab2)}
+.legend .ramp{flex:1 1 auto;height:.5rem;border-radius:.3rem;
+  background:linear-gradient(90deg,var(--sorkh),var(--zard),var(--sabz))}
+.note{font-size:.8rem;color:var(--morakkab2);margin-top:.9rem}
+
+/* ابزار */
+.tool{border:1px solid var(--khat);border-radius:.85rem;background:var(--kaghaz2);
+  padding:.9rem 1rem;margin-top:.9rem}
+.tool h4{margin:0 0 .6rem;font-size:1rem;font-weight:700}
+.trow{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;flex-wrap:wrap}
+.trow label{flex:0 0 4.6rem;font-size:.85rem;color:var(--morakkab2)}
+.trow input,.trow select{background:var(--kaghaz);border:1px solid var(--khat);
+  border-radius:.45rem;padding:.35rem .5rem;font-family:inherit;font-size:.95rem;
+  color:var(--morakkab);width:4.2rem;text-align:center}
+.trow select{width:auto}
+.tout{margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--khat);
+  font-size:.92rem;line-height:2}
+.tout b{color:var(--firooze)}
+
+/* برگه */
+.sheet{position:fixed;inset:0;background:rgba(10,14,25,.5);display:flex;
+  align-items:flex-end;justify-content:center;z-index:30}
+.sheet[hidden]{display:none}
+.sheetbox{background:var(--kaghaz);width:100%;max-width:36rem;max-height:86%;
+  border-radius:1.1rem 1.1rem 0 0;overflow-y:auto;padding:0 1rem 1.8rem;
+  box-shadow:0 -6px 24px var(--sayeh)}
+.sheethead{position:sticky;top:0;background:var(--kaghaz);padding:.85rem 0 .6rem;
+  border-bottom:1px solid var(--khat);display:flex;align-items:center;gap:.6rem}
+.sheethead h2{margin:0;font-size:1.08rem;flex:1 1 auto}
+.hokm{border-bottom:1px solid var(--khat);padding:.8rem 0}
+.hokm .top{display:flex;align-items:center;gap:.5rem;font-size:.8rem;
+  color:var(--morakkab2);margin-bottom:.3rem;flex-wrap:wrap}
+.tag{border-radius:.35rem;padding:.05rem .5rem;font-size:.75rem;font-weight:500}
+.tag.k{background:var(--sabz-kam);color:var(--sabz)}
+.tag.b{background:var(--sorkh-kam);color:var(--sorkh)}
+.hokm p{margin:0;font-size:.92rem;line-height:1.9}
+.hokm .src{font-size:.75rem;color:var(--morakkab2);margin-top:.35rem}
+.jam{display:flex;justify-content:space-between;padding:.8rem 0 0;font-size:.92rem}
+
+nav.tabs{flex:0 0 auto;display:flex;border-top:1px solid var(--khat);
+  background:var(--kaghaz2);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs button{flex:1 1 0;background:none;border:0;padding:.7rem 0 .75rem;
+  font-family:inherit;font-size:.88rem;color:var(--morakkab2);cursor:pointer;
+  border-top:2.5px solid transparent;margin-top:-1px}
+nav.tabs button.on{color:var(--firooze);border-top-color:var(--firooze);font-weight:500}
+
+.yaddasht{margin-top:1.25rem;padding:.8rem .95rem;border-radius:.75rem;
+  background:var(--kaghaz2);border:1px solid var(--khat);font-size:.85rem;
+  line-height:1.95;color:var(--morakkab2)}
+.yaddasht b{display:block;color:var(--morakkab);font-weight:500;margin-bottom:.2rem}
+.pa{text-align:center;color:var(--morakkab2);margin-top:1.4rem;
+  font-family:Gulzar,Vazirmatn,serif;font-size:1.05rem;line-height:2.2}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div id="app">
+  <header>
+    <div class="marz"></div>
+    <div class="navrow">
+      <button class="nav" id="prev" aria-label="روز قبل">‹</button>
+      <div class="dates">
+        <div class="d1" id="d1"></div>
+        <div class="d2" id="d2"></div>
+      </div>
+      <button class="nav" id="next" aria-label="روز بعد">›</button>
+      <button class="nav today-btn" id="today">امروز</button>
+      <button class="nav" id="gear" aria-label="تنظیمات">⚙</button>
+    </div>
+    <div class="vaziat" id="vaziat" hidden></div>
+    <div class="settings" id="settings" hidden>
+      <div class="srow"><b>شهر</b><select id="city"></select></div>
+      <div class="srow"><b>اندازه‌ی خط</b>
+        <button data-fs="14">کوچک</button><button data-fs="16">متوسط</button>
+        <button data-fs="18">بزرگ</button><button data-fs="21">خیلی بزرگ</button>
+      </div>
+      <div class="srow"><b>تم</b>
+        <button data-th="auto">خودکار</button><button data-th="light">روشن</button>
+        <button data-th="dark">تیره</button>
+      </div>
+      <!-- دکمه‌های آزمایش و بازگشایی از اینجا برداشته شدند و به صفحه‌ی مدیر
+           رفتند؛ پنج ضربه روی نوار بالا گیت ضعیفی بود که هر کاربر کنجکاوی
+           می‌توانست پیدا کند و قفل را دور بزند. -->
+    </div>
+  </header>
+
+  <main id="main"></main>
+
+  <nav class="tabs">
+    <button id="tab-rooz" class="on">روز</button>
+    <button id="tab-mah">تقویم ماه</button>
+    <button id="tab-abzar">ابزار</button>
+  </nav>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheetbox">
+    <div class="sheethead">
+      <h2 id="sheet-title"></h2>
+      <button class="nav" id="sheet-close" aria-label="بستن">×</button>
+    </div>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+
+<script>
+const D = {"AT":{"ml":[[0,0,1,0,6288774,-20905355],[2,0,-1,0,1274027,-3699111],[2,0,0,0,658314,-2955968],[0,0,2,0,213618,-569925],[0,1,0,0,-185116,48888],[0,0,0,2,-114332,-3149],[2,0,-2,0,58793,246158],[2,-1,-1,0,57066,-152138],[2,0,1,0,53322,-170733],[2,-1,0,0,45758,-204586],[0,1,-1,0,-40923,-129620],[1,0,0,0,-34720,108743],[0,1,1,0,-30383,104755],[2,0,0,-2,15327,10321],[0,0,1,2,-12528,0],[0,0,1,-2,10980,79661],[4,0,-1,0,10675,-34782],[0,0,3,0,10034,-23210],[4,0,-2,0,8548,-21636],[2,1,-1,0,-7888,24208],[2,1,0,0,-6766,30824],[1,0,-1,0,-5163,-8379],[1,1,0,0,4987,-16675],[2,-1,1,0,4036,-12831],[2,0,2,0,3994,-10445],[4,0,0,0,3861,-11650],[2,0,-3,0,3665,14403],[0,1,-2,0,-2689,-7003],[2,0,-1,2,-2602,0],[2,-1,-2,0,2390,10056],[1,0,1,0,-2348,6322],[2,-2,0,0,2236,-9884],[0,1,2,0,-2120,5751],[0,2,0,0,-2069,0],[2,-2,-1,0,2048,-4950],[2,0,1,-2,-1773,4130],[2,0,0,2,-1595,0],[4,-1,-1,0,1215,-3958],[0,0,2,2,-1110,0],[3,0,-1,0,-892,3258],[2,1,1,0,-810,2616],[4,-1,-2,0,759,-1897],[0,2,-1,0,-713,-2117],[2,2,-1,0,-700,2354],[2,1,-2,0,691,0],[2,-1,0,-2,596,0],[4,0,1,0,549,-1423],[0,0,4,0,537,-1117],[4,-1,0,0,520,-1571],[1,0,-2,0,-487,-1739],[2,1,0,-2,-399,0],[0,0,2,-2,-381,-4421],[1,1,1,0,351,0],[3,0,-2,0,-340,0],[4,0,-3,0,330,0],[2,-1,2,0,327,0],[0,2,1,0,-323,1165],[1,1,-1,0,299,0],[2,0,3,0,294,0],[2,0,-1,-2,0,8752]],"mb":[[0,0,0,1,5128122],[0,0,1,1,280602],[0,0,1,-1,277693],[2,0,0,-1,173237],[2,0,-1,1,55413],[2,0,-1,-1,46271],[2,0,0,1,32573],[0,0,2,1,17198],[2,0,1,-1,9266],[0,0,2,-1,8822],[2,-1,0,-1,8216],[2,0,-2,-1,4324],[2,0,1,1,4200],[2,1,0,-1,-3359],[2,-1,-1,1,2463],[2,-1,0,1,2211],[2,-1,-1,-1,2065],[0,1,-1,-1,-1870],[4,0,-1,-1,1828],[0,1,0,1,-1794],[0,0,0,3,-1749],[0,1,-1,1,-1565],[1,0,0,1,-1491],[0,1,1,1,-1475],[0,1,1,-1,-1410],[0,1,0,-1,-1344],[1,0,0,-1,-1335],[0,0,3,1,1107],[4,0,0,-1,1021],[4,0,-1,1,833],[0,0,1,-3,777],[4,0,-2,1,671],[2,0,0,-3,607],[2,0,2,-1,596],[2,-1,1,-1,491],[2,0,-2,1,-451],[0,0,3,-1,439],[2,0,2,1,422],[2,0,-3,-1,421],[2,1,-1,1,-366],[2,1,0,1,-351],[4,0,0,1,331],[2,-1,1,1,315],[2,-2,0,-1,302],[0,0,1,3,-283],[2,1,1,-1,-229],[1,1,0,-1,223],[1,1,0,1,223],[0,1,-2,-1,-220],[2,1,-1,-1,-220],[1,0,1,1,-185],[2,-1,-2,-1,181],[0,1,2,1,-177],[4,0,-2,-1,176],[4,-1,-1,-1,166],[1,0,1,-1,-164],[4,0,1,-1,132],[1,0,-1,-1,-119],[4,-1,0,-1,115],[2,-2,0,1,107]],"hijri":{"base":2433214,"lens":"010101101010101010101101010101001101101010100101110101010010110110101001010111010100100111011010010011011010101010101101010101001101011010101001011101010100101101101010010101110101000101110110100010110111010010011011010101001011011010101001011011010100101011011010100101011101010001011101101000101101110100010101110101010010110110101001010110110101001010110110100101010111010100100111011010001011011101000101011101010010101101101010010110110101001010110101100101010110101100101010110110010100110111010001010111011000101011101010010101101101010010101101100101010101101010101010101101010101001101101010010101110110001010111010100101010111010010101011101001010101101010101010101101010101010101011010101001011101010010101110101001010101110100101010111010010101011011001010101011010101010101011010101001011011010100101011101010100101011101010001101110100100101110110010100110110101010011010110101010011010110101001010110110100101011011010100011011101010001011101100100101101110010010101110101010010110110101010010110110101001010110110100101010111010100010111011010001011011100100101011101010010101101101010010101101101001010101101101001010101110100100101110110100010110111010001010111010100101011011010010101101101001010101101010101010101101011001010101101100100101101110010010101110101001010111010100101010111010010101011011001010101011010101010101011010101001011011010100101011101010010101110101001010101110100101010110110010101011010101010101010110101010101011010101001010111010100101011101010010011011101001001101110100100101110110010100110110101010101010110101010010110110101001010110110100101010111010010011011101001001011101100100101101101010100101101101010010110101101010010101101101001010101110100100110111010010010111011001001011011010100101011101010100101101101010010101101011010010101101101001001101110100100101110110010010110111001001010111010100101011","firstIndex":16416},"torki":{"base":2460417,"days":"ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^AB"},"borooj":["حمل","ثور","جوزا","سرطان","اسد","سنبله","میزان","عقرب","قوس","جدی","دلو","حوت"],"mahShamsi":["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"],"mahQamari":["محرم","صفر","ربیع‌الاول","ربیع‌الثانی","جمادی‌الاول","جمادی‌الثانی","رجب","شعبان","رمضان","شوال","ذی‌القعده","ذی‌الحجه"],"mahMiladi":["ژانویه","فوریه","مارس","آوریل","مه","ژوئن","ژوئیه","اوت","سپتامبر","اکتبر","نوامبر","دسامبر"],"roozHafte":["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"],"chaldean":["زحل","مشتری","مریخ","شمس","زهره","عطارد","قمر"],"hakemRooz":["زحل","شمس","قمر","مریخ","عطارد","مشتری","زهره"],"tabe":{"مشتری":"سعد اکبر","زهره":"سعد اصغر","قمر":"سعد","عطارد":"ممتزج","شمس":"ممتزج","مریخ":"نحس اصغر","زحل":"نحس اکبر"},"rangSaat":{"سعد اکبر":"سبز","سعد اصغر":"سبز","سعد":"سبز","ممتزج":"زرد","نحس اصغر":"قرمز","نحس اکبر":"قرمز"},"jahatSekiz":["مشرق","مابین مشرق و جنوب","جنوب","مابین جنوب و مغرب","مغرب","مابین مغرب و شمال","شمال","مابین شمال و تحت‌الارض","تحت‌الارض","فوق‌الارض"],"dasteha":["سفر","ازدواج","معاملات","درمان و جراحی","ساخت‌وساز","کشاورزی","آموزش","ملاقات مهم","تولد نوزاد"],"shahrha":[{"n":"تهران","lat":35.6892,"lon":51.389,"tz":3.5},{"n":"مشهد","lat":36.2605,"lon":59.6168,"tz":3.5},{"n":"اصفهان","lat":32.6546,"lon":51.668,"tz":3.5},{"n":"کرج","lat":35.84,"lon":50.9391,"tz":3.5},{"n":"شیراز","lat":29.5918,"lon":52.5837,"tz":3.5},{"n":"تبریز","lat":38.0962,"lon":46.2738,"tz":3.5},{"n":"قم","lat":34.6416,"lon":50.8746,"tz":3.5},{"n":"اهواز","lat":31.3183,"lon":48.6706,"tz":3.5},{"n":"کرمانشاه","lat":34.3277,"lon":47.0778,"tz":3.5},{"n":"ارومیه","lat":37.5527,"lon":45.0761,"tz":3.5},{"n":"رشت","lat":37.2808,"lon":49.5832,"tz":3.5},{"n":"زاهدان","lat":29.4963,"lon":60.8629,"tz":3.5},{"n":"همدان","lat":34.7992,"lon":48.5146,"tz":3.5},{"n":"کرمان","lat":30.2839,"lon":57.0834,"tz":3.5},{"n":"یزد","lat":31.8974,"lon":54.3569,"tz":3.5},{"n":"اردبیل","lat":38.2498,"lon":48.2933,"tz":3.5},{"n":"بندرعباس","lat":27.1865,"lon":56.2808,"tz":3.5},{"n":"اراک","lat":34.0954,"lon":49.7013,"tz":3.5},{"n":"زنجان","lat":36.6736,"lon":48.4787,"tz":3.5},{"n":"سنندج","lat":35.3219,"lon":46.9862,"tz":3.5},{"n":"قزوین","lat":36.2688,"lon":50.0041,"tz":3.5},{"n":"خرم‌آباد","lat":33.4878,"lon":48.3558,"tz":3.5},{"n":"گرگان","lat":36.8427,"lon":54.4444,"tz":3.5},{"n":"ساری","lat":36.5633,"lon":53.0601,"tz":3.5},{"n":"شهرکرد","lat":32.3256,"lon":50.8644,"tz":3.5},{"n":"بوشهر","lat":28.9234,"lon":50.8203,"tz":3.5},{"n":"بیرجند","lat":32.8649,"lon":59.2262,"tz":3.5},{"n":"ایلام","lat":33.6374,"lon":46.4227,"tz":3.5},{"n":"بجنورد","lat":37.471,"lon":57.329,"tz":3.5},{"n":"یاسوج","lat":30.6682,"lon":51.588,"tz":3.5},{"n":"سمنان","lat":35.5729,"lon":53.3971,"tz":3.5},{"n":"بندر بوشهر","lat":28.9684,"lon":50.8385,"tz":3.5},{"n":"دزفول","lat":32.3814,"lon":48.4058,"tz":3.5},{"n":"بابل","lat":36.5513,"lon":52.679,"tz":3.5},{"n":"نجف","lat":31.989,"lon":44.3148,"tz":3.0},{"n":"کربلا","lat":32.616,"lon":44.0249,"tz":3.0},{"n":"مکه","lat":21.4225,"lon":39.8262,"tz":3.0},{"n":"مدینه","lat":24.4686,"lon":39.6142,"tz":3.0}]},"R":{"version":1,"tozih":"مخزن قوانین اپلیکیشن ساعت خوب. این فایل داده است، نه کد — بدون تغییر برنامه قابل ویرایش است. هر قانون یک شرط دارد و یک متن. شرط‌ها را موتور قانون (rules_engine.py) روی خروجی محاسبات saat_core.py اجرا می‌کند.","manabe":{"ekhtiarat":"خلاصه اختیارات روزهای ماه قمری، منسوب به امام جعفر صادق. متن کامل هر سی روز.","nohoosat":"در بیان آنکه در هر ماهی چند روز نحس است. صفحه ۴۲۹.","borj":"جدول موضع قمر در بروج. صفحه‌ی دست‌نویس.","sekiz":"جدول معرفت ستاره سکز یلدوز. هشت ستاره بشکل شتر، در نهایت نحوست."},"anvae_shart":{"rooz_hafte":"نام روز هفته","rooz_qamari":"روز ماه قمری، یک تا سی","mah_va_rooz_qamari":"جفت [شماره ماه قمری، روز]","borj_qamar":"نام برج قمر","torki_mod10":"باقیمانده‌ی (روز ماه ترکی منهای یک) بر ده","barchasb":"دسته‌هایی که حکم روی آن‌ها اثر می‌گذارد. کلید hame یعنی همه‌ی دسته‌ها. اگر کنار hame دسته‌ی مشخصی هم بیاید، آن دسته دو بار شمرده می‌شود."},"qavanin":[{"id":"hafte-doshanbe","daste":"عمومی","jahat":"bad","shedat":2,"shart":{"rooz_hafte":["دوشنبه"]},"matn":"دوشنبه از ایام هفته نحس شمرده شده","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"hafte-chaharshanbe","daste":"عمومی","jahat":"bad","shedat":2,"shart":{"rooz_hafte":["چهارشنبه"]},"matn":"چهارشنبه از ایام هفته نحس شمرده شده","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"mahane-3-5","daste":"عمومی","jahat":"bad","shedat":2,"shart":{"rooz_qamari":[3,5]},"matn":"سوم و پنجم هر ماه قمری نحس است. این مذهب مختار اهل شرع و منجمین است","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"ashura","daste":"عمومی","jahat":"bad","shedat":3,"shart":{"mah_va_rooz_qamari":[[1,10]]},"matn":"روز عاشورا از همه‌ی روزها نحس‌تر است","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"tasua","daste":"عمومی","jahat":"bad","shedat":2,"shart":{"mah_va_rooz_qamari":[[1,9]]},"matn":"تاسوعا، نهم محرم، نیز نحس است","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"hashtom-moharram","daste":"عمومی","jahat":"bad","shedat":1,"shart":{"mah_va_rooz_qamari":[[1,8]]},"matn":"بعضی هشتم محرم را هم نحس می‌دانند","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"bistohashtom-safar","daste":"عمومی","jahat":"bad","shedat":2,"shart":{"mah_va_rooz_qamari":[[2,28]]},"matn":"بیست و هشتم ماه صفر نحس است","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"bistoyekom-ramazan","daste":"عمومی","jahat":"bad","shedat":2,"shart":{"mah_va_rooz_qamari":[[9,21]]},"matn":"بیست و یکم ماه مبارک رمضان نحس است","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"bistochahar-rooz","daste":"عمومی","jahat":"bad","shedat":3,"shart":{"mah_va_rooz_qamari":[[1,11],[1,12],[2,1],[2,8],[3,1],[3,20],[4,11],[4,20],[5,10],[5,15],[6,2],[6,4],[7,11],[7,13],[8,3],[8,4],[9,3],[9,20],[10,8],[10,20],[11,2],[11,5],[12,6],[12,7]]},"matn":"از بیست و چهار روز نحس سال است. منقول از حضرت رسول: در هر ماهی دو روز است که برای هیچ کاری خوب نیست","manba":"nohoosat","barchasb":{"hame":"bad"}},{"id":"mosafer-aqrab","daste":"سفر","jahat":"bad","shedat":2,"shart":{"borj_qamar":["عقرب"]},"matn":"از برای مسافر، قمر در عقرب بودن خوب نیست","manba":"nohoosat","barchasb":{"سفر":"bad"}},{"id":"mosafer-asad","daste":"سفر","jahat":"bad","shedat":2,"shart":{"borj_qamar":["اسد"]},"matn":"از برای مسافر، قمر در اسد بودن خوب نیست","manba":"nohoosat","barchasb":{"سفر":"bad"}},{"id":"nekah-aqrab","daste":"ازدواج","jahat":"bad","shedat":3,"shart":{"borj_qamar":["عقرب"]},"matn":"برای نکاح کردن، قمر در عقرب بودن به‌غایت بد است","manba":"nohoosat","barchasb":{"ازدواج":"bad"}},{"id":"borj-hamal","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["حمل"]},"matn":"نو بریدن و پوشیدن، مسافرت، ابتدای معالجه، فرستادن کالای تجاری به خارج، و ختنه‌ی کودکان نیک است","manba":"borj","barchasb":{"سفر":"khoob","درمان و جراحی":"khoob","معاملات":"khoob"}},{"id":"borj-sowr","daste":"برج قمر","jahat":"khoob","shedat":3,"shart":{"borj_qamar":["ثور"]},"matn":"برج ثور شرف قمر است. اکثر امور، بخصوص پیوند زناشویی، خوب است — مشروط بر اینکه ایام سوگواری نباشد","manba":"borj","barchasb":{"hame":"khoob","ازدواج":"khoob"}},{"id":"borj-jowza","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["جوزا"]},"matn":"نو بریدن و پوشیدن، شروع تحصیل، کارهای تعلیماتی، و تاسیس شرکت خوب است","manba":"borj","barchasb":{"آموزش":"khoob","معاملات":"khoob"}},{"id":"borj-saratan","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["سرطان"]},"matn":"کارهای کشاورزی، حفر چاه، و ایجاد کانال‌های آب‌رسانی نیکوست","manba":"borj","barchasb":{"کشاورزی":"khoob","ساخت‌وساز":"khoob"}},{"id":"borj-asad","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["اسد"]},"matn":"عقد و عروسی، شروع کارهای دائمی و مستمر، و شروع معالجه و جراحی خوب است","manba":"borj","barchasb":{"ازدواج":"khoob","درمان و جراحی":"khoob","ساخت‌وساز":"khoob","آموزش":"khoob"}},{"id":"borj-sonbole","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["سنبله"]},"matn":"کارهای تجاری، نو بریدن و پوشیدن، مسافرت، و خرید باغ و زمین زراعی خوب است","manba":"borj","barchasb":{"معاملات":"khoob","سفر":"khoob","کشاورزی":"khoob"}},{"id":"borj-mizan","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["میزان"]},"matn":"پیوند زناشویی، نو بریدن و پوشیدن، مسافرت‌های طولانی، و ابتدای معالجه خوب است","manba":"borj","barchasb":{"ازدواج":"khoob","سفر":"khoob","درمان و جراحی":"khoob"}},{"id":"borj-aqrab-khoob","daste":"برج قمر","jahat":"khoob","shedat":1,"shart":{"borj_qamar":["عقرب"]},"matn":"کارهای کشاورزی و آبیاری خوب است","manba":"borj","barchasb":{"کشاورزی":"khoob"}},{"id":"borj-aqrab-bad","daste":"برج قمر","jahat":"bad","shedat":2,"shart":{"borj_qamar":["عقرب"]},"matn":"شروع کارهای اساسی و مهم مناسب نیست","manba":"borj","barchasb":{"hame":"bad","ازدواج":"bad","ساخت‌وساز":"bad"}},{"id":"borj-qows","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["قوس"]},"matn":"نو بریدن و پوشیدن، عقد و عروسی، و شروع کارهای آموزشی خوب است","manba":"borj","barchasb":{"ازدواج":"khoob","آموزش":"khoob"}},{"id":"borj-jady","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["جدی"]},"matn":"عمل جراحی، شروع معالجه، کشت و زرع، و دید و بازدید سیاسی خوب است","manba":"borj","barchasb":{"درمان و جراحی":"khoob","کشاورزی":"khoob","ملاقات مهم":"khoob"}},{"id":"borj-dalv","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["دلو"]},"matn":"شروع ساختمان، معامله‌ی واحدهای مسکونی، رفتن به خانه‌ی نو، و کشاورزی خوب است","manba":"borj","barchasb":{"ساخت‌وساز":"khoob","معاملات":"khoob","کشاورزی":"khoob"}},{"id":"borj-hoot","daste":"برج قمر","jahat":"khoob","shedat":2,"shart":{"borj_qamar":["حوت"]},"matn":"نو بریدن و پوشیدن، آغاز تعلیم و تعلم، دادن سفارشات تجاری، و بذرافشانی خوب است","manba":"borj","barchasb":{"آموزش":"khoob","معاملات":"khoob","کشاورزی":"khoob"}}],"ekhtiarat_rooz_qamari":{"tozih":"خلاصه اختیارات روزهای هر ماه. کلید = روز ماه قمری. روز دهم و سی‌ام در متن نیامده‌اند؛ به گفته‌ی صاحب کتاب چون روزهای بدی بوده‌اند و درباره‌شان اظهار نظر نشده.","rooz":{"1":{"jahat":"khoob","matn":"روز نیکویی است و حضرت آدم (ع) و حضرت محمد (ص) در این روز خلق شده اند و طلب علم و دانش، زراعت، دخول بر سلاطین و امرا، تزویج، خرید و فروش، مسافرت کردن و طلب حوایج در این روز خوب ومبارک است.","barchasb":{"آموزش":"khoob","کشاورزی":"khoob","ملاقات مهم":"khoob","ازدواج":"khoob","معاملات":"khoob","سفر":"khoob"},"shedat_kam":[]},"2":{"jahat":"khoob","matn":"روز بسیار مبارکی است و حوا در این روز خلق شده، هم چنین این روز شایسته ساختن بناها وعمارت کردن، اختیار نمودن امور به خصوص سفر، طلب حوایج و عمارت کردن است هم چنین کسی که در اوایل این روز بیمار گردد بیماری او خفیف و سبک باشد و سریعا” بهبود می یابد.","barchasb":{"ساخت‌وساز":"khoob","سفر":"khoob","ملاقات مهم":"khoob","درمان و جراحی":"khoob"},"shedat_kam":[]},"3":{"jahat":"bad","matn":"روز بسیار نامبارکی می باشد وآدم و حوا را در این روز از بهشت بیرون راندند و باید از ملاقات با امرا، خرید و فروش وطلب حوایج در این روز پرهیز کرد وهیچ عملی در این روز خوب نیست وشخص گریخته  و فراری به دست نیاید  و بیمار رنج و تعب بسیار برد.","barchasb":{"hame":"bad","ملاقات مهم":"bad","معاملات":"bad","درمان و جراحی":"bad"},"shedat_kam":[]},"4":{"jahat":"khoob","matn":"این روز برای زراعت و کشاورزی، صید و شکار، ساخت و ساز و تزویج مناسب و نیکوست و مسافرت در این روز مکروه است و هابیل در چنین روزی متولد شده است و شخص گریخته و فراری به دست نیاید. هم چنین قدم مولود در این روز مبارک است.","barchasb":{"کشاورزی":"khoob","ساخت‌وساز":"khoob","ازدواج":"khoob","تولد نوزاد":"khoob","سفر":"bad"},"shedat_kam":["سفر"]},"5":{"jahat":"bad","matn":"نحس مستمری است و قابیل در این روز متولد شده و در همین روز برادر خود هابیل را به قتل رساند و این اولین قتل در تاریخ عالم است و کلا” انجام هیچ کاری در این روز خوب نیست و مولود قدمش خوب نیست.","barchasb":{"hame":"bad","سفر":"bad","ازدواج":"bad","معاملات":"bad","تولد نوزاد":"bad"},"shedat_kam":[]},"6":{"jahat":"khoob","matn":"در این روز تزویج، طلب حاجات، بنا نهادن ٫ مسافرت در خشکی و دریا و سعی و تلاش برای انجام کار ها نیکو و مبارک است. هم چنین هر کس در این روز به مسافرت رود به مقصود و مراد خویش خواهد رسید و شخص گریخته، فراری و یا گم شده در این روز زود به دست می آید و پیدا می شود. قدم نو رسیده نیکوست و کلا” انجام هر امر خیری، خوب است.","barchasb":{"hame":"khoob","ازدواج":"khoob","ملاقات مهم":"khoob","ساخت‌وساز":"khoob","سفر":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"7":{"jahat":"khoob","matn":"روز اختیار شده ای است. پس برای انجام هر کاری صالح و نیکوست. هم چنین خرید و فروش، بنا نهادن ساختمان ها، غرس درختان، شروع به کتابت و تألیف و وارد شدن بر امرا و حکام نیکوست و قدم نو رسیده خوب و مبارک است.","barchasb":{"hame":"khoob","معاملات":"khoob","ساخت‌وساز":"khoob","کشاورزی":"khoob","آموزش":"khoob","ملاقات مهم":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"8":{"jahat":"khoob","matn":"برای هر حاجتی ازجمله خرید و فروش، غرس درختان و بر امرا وارد شدن نیکوست و به مسافرت رفتن، سوار کشتی شدن و عهدنامه نوشتن در این روز مکروه است. هم چنین عمر مولود دراز و نیز سپردن طفل به دایه خوب است.","barchasb":{"معاملات":"khoob","کشاورزی":"khoob","ملاقات مهم":"khoob","تولد نوزاد":"khoob","سفر":"bad"},"shedat_kam":["سفر"]},"9":{"jahat":"khoob","matn":"روز سبکی برای هر امری است و قرض دادن، زراعت و کشاورزی، تجارت، تزویج و غرس درختان و جنگیدن در این روز خوب است و شخص گریخته پیدا شود و قدم نورسیده میمون و مبارک است و مسافرت در این روز بسیار خوب و پسندیده است و شخص مسافر جز خیر و خوبی چیز دیگری در این سفر نخواهد دید.","barchasb":{"معاملات":"khoob","کشاورزی":"khoob","ازدواج":"khoob","تولد نوزاد":"khoob","سفر":"khoob"},"shedat_kam":[]},"10":{"jahat":"khoob","matn":"روز صالحی است و حضرت نوح (ع) در این روز به دنیا آمده است و خرید و فروش در آن نیکوست و وارد شدن بر امرا و حکام در این روز خوب نیست و هر کس در این روز فرار کند گرفتار می گردد و شخص گریخته پیدا می شود و وصیت کردن بیمار در این روز خوب است و بچه در این روز به سختی متولد می شود.","barchasb":{"معاملات":"khoob","درمان و جراحی":"khoob","ملاقات مهم":"bad","تولد نوزاد":"bad"},"shedat_kam":[]},"11":{"jahat":"khoob","matn":"حضرت شیث بن آدم در این روز متولد شده است و شروع به هر کاری در این روز خوب است، خصوصا” خرید و فروش و بیمار سریعا” بهبود می یابد و کسی که در این روز به دنیا آید امور معاش و زندگیش به خوبی خواهد گذشت و گریخته زود پیدا می شود و شخص گم شده صحیح و سالم می ماند.","barchasb":{"hame":"khoob","معاملات":"khoob","درمان و جراحی":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"12":{"jahat":"khoob","matn":"این روز برای تزویج، دیدار با امرا، باز کردن دکان، خرید و فروش، شروع شرکت و مسافرت در دریا نیکوست و بیمار سریعا” خوب می شود و مولود آسان متولد می شود و شخص گریخته بازگردد. هم چنین از وساطت بین مردم باید خودداری کرد.","barchasb":{"ازدواج":"khoob","ملاقات مهم":"khoob","معاملات":"khoob","سفر":"khoob","درمان و جراحی":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"13":{"jahat":"bad","matn":"روز نحسی است و از منازعه و جنگ و جدل، دیدار با حکام و امرا، استفاده  از عطریات و تراشیدن سر باید اجتناب کرد. بیماری بیمار، در این روز شدت یابد و مولود نماند. همچنین شخص گریخته و فراری سالم باز خواهد گشت.","barchasb":{"hame":"bad","ملاقات مهم":"bad","درمان و جراحی":"bad","تولد نوزاد":"bad"},"shedat_kam":[]},"14":{"jahat":"khoob","matn":"برای هر کاری خصوصا” طلب علم و دانش، خرید و فروش، قرض گرفتن و قرض دادن و سواری در دریا مناسب است و شخص گریخته زود پیدا شود و بیمار سریعا” بهبود یابد و مولود عمرش طولانی می گردد.","barchasb":{"آموزش":"khoob","معاملات":"khoob","سفر":"khoob","درمان و جراحی":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"15":{"jahat":"khoob","matn":"برای هر کاری خوب است؛ مگر قرض و استقراض. و سفر در این روز موجب خیر و برکت است. شخص بیمار سریعا” بهبودی خویش را به دست آورد و مولود دارای عمر طولانی می گردد.","barchasb":{"hame":"khoob","سفر":"khoob","درمان و جراحی":"khoob","تولد نوزاد":"khoob","معاملات":"bad"},"shedat_kam":["معاملات"]},"16":{"jahat":"bad","matn":"نحس مستمری است و هر کس در پایان این روز به مسافرت رود هلاک می گردد و کلا” سفر و دیدار با امرا و حکام در این روز مکروه است. هم چنین نباید این روز را ابتدای شرع کاری قرار داد و برای انجام هیچ کاری مناسب نیست","barchasb":{"hame":"bad","سفر":"bad","ازدواج":"bad","ساخت‌وساز":"bad","ملاقات مهم":"bad"},"shedat_kam":["سفر","ملاقات مهم"]},"17":{"jahat":"khoob","matn":"روز متوسط و میانه ای است و از قرض دادن در آن باید اجتناب کرد. هم چنین تزویج و خرید و فروش در این روز خوب و مولود میانه است و زراعت، بنایی و وارد شدن بر امر نیز نیکوست. هم چنین شخص گریخته سریعا” باز خواهد گشت.","barchasb":{"ازدواج":"khoob","معاملات":"khoob","کشاورزی":"khoob","ساخت‌وساز":"khoob","ملاقات مهم":"khoob"},"shedat_kam":["معاملات"]},"18":{"jahat":"khoob","matn":"روز مبارکی از برای هر کاری خصوصا” خرید و فروش، کشاورزی، مسافرت، جنگیدن و عقد و نکاح است و بیمار در این روز سریعا” شفا می یابد و مولود میانه است.","barchasb":{"hame":"khoob","سفر":"khoob","ازدواج":"khoob","معاملات":"khoob","درمان و جراحی":"khoob","کشاورزی":"khoob","تولد نوزاد":"khoob"},"shedat_kam":["تولد نوزاد"]},"19":{"jahat":"khoob","matn":"روز سعید و مبارکی است و برای طلب معاش، خرید و فروش، طلب حوایج و یادگیری علم مناسب است و گم شده سریعا” پیدا خواهد شد و مولود نیز مبارک است.","barchasb":{"معاملات":"khoob","ملاقات مهم":"khoob","آموزش":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"20":{"jahat":"khoob","matn":"روز میانه و متوسطی است و برای مسافرت، قضای حوایج، بنای ساختمان ها، حصار کشیدن، غرس درختان، دیدار با حکام و خریدن وسیله ی نقلیه نیکو و مبارک است و مولود در این روز بسیار خوب است.","barchasb":{"سفر":"khoob","ملاقات مهم":"khoob","ساخت‌وساز":"khoob","کشاورزی":"khoob","معاملات":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"21":{"jahat":"bad","matn":"روز بسیار نحسی است و شایسته نیست که کاری را در این روز انجام داد و از طلبیدن حاجت، وارد شدن بر حکام و مسافرت کردن باید پرهیز نمود. همچنین مولود فقیر شود.","barchasb":{"hame":"bad","ملاقات مهم":"bad","سفر":"bad","تولد نوزاد":"bad"},"shedat_kam":[]},"22":{"jahat":"khoob","matn":"روز صالح و نیکویی است و از برای خرید و فروش، صدقه دادن، وارد شدن بر حکام و طلب حاجت مناسب است. هم چنین بیمار به زودی شفا می یابد و مسافر به مراد خود خواهد رسید.","barchasb":{"معاملات":"khoob","ملاقات مهم":"khoob","درمان و جراحی":"khoob","سفر":"khoob"},"shedat_kam":[]},"23":{"jahat":"khoob","matn":"روزی است که در آن طلب حوایج، تزویج، خرید و فروش، تجارت، وارد شدن بر حکام و مسافرت رفتم نیکوست و حضرت یوسف (ع) در این روز متولد شده است.","barchasb":{"ملاقات مهم":"khoob","ازدواج":"khoob","معاملات":"khoob","سفر":"khoob"},"shedat_kam":[]},"24":{"jahat":"bad","matn":"روزی نحس است  و فرعون در این روز متولد شده و از برای انجام هیچ کاری خوب نیست و بیمار سختی بیند و دیر شفا یابد و زندگانی مولود به دشواری گذرد.","barchasb":{"hame":"bad","درمان و جراحی":"bad","تولد نوزاد":"bad"},"shedat_kam":[]},"25":{"jahat":"bad","matn":"روز بسیار نحس و شدید البلایی است و از آن جا که اکثر بلا ها در این روز بر فرعون نازل شده بنابر این نباید در این روزحاجتی را طلبید و بیمار رنج و سختی زیادی را باید تحمل کند. البته مولود در این روز خوش قدم است.","barchasb":{"hame":"bad","ملاقات مهم":"bad","درمان و جراحی":"bad","تولد نوزاد":"khoob"},"shedat_kam":[]},"26":{"jahat":"khoob","matn":"روزی است که حضرت موسی (ع) عصایش را به دریا زد و دریا شکافت. هم چنین برای سفر کردن خوب است و بیمار سریعا” شفا می یابد و مولود عمرش دراز باشد. تجارت نیز خوب است  البته از ازدواج در این روز باید برحذر بود؛ زیرا به جدایی خواهد انجامید.","barchasb":{"سفر":"khoob","درمان و جراحی":"khoob","تولد نوزاد":"khoob","معاملات":"khoob","ازدواج":"bad"},"shedat_kam":[]},"27":{"jahat":"khoob","matn":"روز بسیار خوبی است و برای هر امر و حاجتی مناسب است و مولود عمری طولانی داشته باشد و مسافرت و نزد امرا رفتن بسیار خوب است.","barchasb":{"hame":"khoob","تولد نوزاد":"khoob","سفر":"khoob","ملاقات مهم":"khoob"},"shedat_kam":[]},"28":{"jahat":"khoob","matn":"روز مبارک و نیکویی است و از برای هر امری خوب و مناسب است و حضرت یعقوب (ع) در این روز متولد شده است و هر کس در این روز به دنیا آید در زندگانیش محزون و غمگین باشد و در آخر به مراد و مطلب خود برسد.","barchasb":{"hame":"khoob"},"shedat_kam":[]},"29":{"jahat":"khoob","matn":"روز صالحی است و خرید و فروش، دیدار امرا، طلب حوایج و سایر امور در این روز مناسب است. هم چنین بیمار سریعا” شفا یابد و قرض و استقراض در آن خوب است و مولود حلیم و غنی می گردد و وصیت کردن در آن مکروه است.","barchasb":{"معاملات":"khoob","ملاقات مهم":"khoob","درمان و جراحی":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]},"30":{"jahat":"khoob","matn":"روز خوبی است و مناسب خرید و فروش، تجارت، قرض و استقراض و رفتن نزد حکام است. شخص گریخته به زودی برمی گردد، بیمار شفا می یابد و مولود در این روز تربیت یابد و بردبار شده کار او بالا گیرد و نیز راست گو و وفادار گردد.","barchasb":{"معاملات":"khoob","ملاقات مهم":"khoob","درمان و جراحی":"khoob","تولد نوزاد":"khoob"},"shedat_kam":[]}}},"sekiz_yilduz":{"tozih":"جدول ستاره سکز یلدوز — هشت ستاره بشکل شتر. کلید = باقیمانده‌ی (روز ماه ترکی منهای یک) بر ده. روز ماه ترکی از torki_table.json می‌آید که دستی از تقویم چاپی وارد شده؛ بیرون از بازه‌ی آن جدول، جای ستاره معلوم نیست.","faal":true,"jadval":{"0":{"jahat_setare":"مشرق","jahat":"bad","matn":"بنا نهادن نیک نیست که زود خراب می‌شود","barchasb":{"ساخت‌وساز":"bad"}},"1":{"jahat_setare":"مابین مشرق و جنوب","jahat":"bad","matn":"مقارنت کردن نیک نیست که کور می‌شود","barchasb":{"ازدواج":"bad"}},"2":{"jahat_setare":"جنوب","jahat":"bad","matn":"در آب رفتن نیک نیست که بیمار می‌شود","barchasb":{"سفر":"bad"}},"3":{"jahat_setare":"مابین جنوب و مغرب","jahat":"bad","matn":"جامه‌ی نو پوشیدن نیک نیست که باعث محبوسی می‌شود","barchasb":{}},"4":{"jahat_setare":"مغرب","jahat":"bad","matn":"مقاربت جستن نیک نیست که باعث بیماری می‌شود","barchasb":{"ازدواج":"bad"}},"5":{"jahat_setare":"مابین مغرب و شمال","jahat":"khonsa","matn":"آنچه پنهان کنند بزودی آشکارا می‌شود","barchasb":{}},"6":{"jahat_setare":"شمال","jahat":"bad","matn":"ازدواج کردن نیک نیست که مفارقت حاصل می‌شود","barchasb":{"ازدواج":"bad"}},"7":{"jahat_setare":"مابین شمال و تحت‌الارض","jahat":"bad","matn":"نزد ملوک رفتن نیک نیست که هلاکت دارد","barchasb":{"ملاقات مهم":"bad"}},"8":{"jahat_setare":"تحت‌الارض","jahat":"bad","matn":"مسافرت کردن نیک نیست که باعث مرگ می‌شود","barchasb":{"سفر":"bad"}},"9":{"jahat_setare":"فوق‌الارض","jahat":"bad","matn":"خصومت و نزاع کردن نیک نیست که خطرناک است","barchasb":{"ملاقات مهم":"bad"}}},"onvan":"ستاره سکزیلدوز","dastoor":"هنگام خارج شدن از منزل از این سمت بیرون نروید.","tozih_boland":"«سکزیلدوز» در ترکی یعنی هشت ستاره. در روایت سنتی هشت ستاره‌اند به شکل شتر و در نهایت نحوست شمرده می‌شوند.\n\nجای این ستاره رصد نمی‌شود — تقویم تعیینش می‌کند. در هر ماه ترکی جهت هر ده روز یک بار تکرار می‌شود: مشرق، مابین مشرق و جنوب، جنوب، مابین جنوب و مغرب، مغرب، مابین مغرب و شمال، شمال، مابین شمال و تحت‌الارض، تحت‌الارض، و فوق‌الارض.\n\nکاری که با آن می‌کنند این است که در آن روز هنگام بیرون رفتن از خانه از آن سمت خارج نمی‌شوند. دو روز آخر هر ده‌روزه جهت ندارند: ستاره زیر زمین یا بالای زمین است، پس سمتی برای پرهیز نیست و فقط حکم خودِ آن روز می‌ماند."},"daf_e_nahoosat":{"onvan":"دفع نحوست در ایام نحس","matn":"چنانچه انسان در ایام نحس ناگزیر از انجام دادن کاری همچون سفر گردد، صدقه دادن و خواندن دعاهای وارد شده و نیز تلاوت سوره‌ها و آیاتی از قرآن کریم، همچون آیة الکرسی، و گفتن این دعا را بخوان. «لاحول و لا قوة الا بالله» در روایات از اسباب دفع نحوست شمرده شده است.","manba":"اضافه‌شده توسط کاربر در اکسل"},"dasteha":["سفر","ازدواج","معاملات","درمان و جراحی","ساخت‌وساز","کشاورزی","آموزش","ملاقات مهم","تولد نوزاد"],"halat_rooz":[{"nam":"بسیار نیک","az":4,"matn":"امروز روز بسیار نیکی است","satr_ezafe":[],"rang":"#1b7f3a"},{"nam":"نیک","az":2,"matn":"امروز نیک است","satr_ezafe":[],"rang":"#5fa832"},{"nam":"معمولی","az":-1,"matn":"امروز روز معمولی است","satr_ezafe":[],"rang":"#c9a227"},{"nam":"بد","az":-5,"matn":"امروز روز بدی است","satr_ezafe":["لا حول و لا قوة الا بالله"],"rang":"#d4622a"},{"nam":"بسیار بد","az":-999,"matn":"امروز روز بسیار بدی است","satr_ezafe":["لا حول و لا قوة الا بالله","صدقه دفع‌کننده‌ی بلایاست"],"rang":"#b32020"}],"tanzim_rang":{"tozih":"برای طیف رنگی تقویم ماه. نمره کمتر یا مساوی kamine قرمز کامل، بیشتر یا مساوی bishine سبز کامل، وسط زرد.","kamine":-8,"miane":0,"bishine":4},"rang_saat":{"سعد اکبر":"سبز","سعد اصغر":"سبز","سعد":"سبز","ممتزج":"زرد","نحس اصغر":"قرمز","نحس اکبر":"قرمز"},"eshterak":{"tozih":"تنظیمات دوره‌ی آزمایشی و اشتراک. متن‌ها اینجا قابل ویرایش‌اند.","rooz_azmayeshi":10,"onvan":"نسخه‌ی کامل","matn":"دوره‌ی آزمایشی شما تمام شده. صفحه‌ی امروز با همه‌ی جزئیاتش همیشه رایگان می‌ماند، ولی برای دیدن روزهای دیگر و برنامه‌ریزی به نسخه‌ی کامل نیاز دارید.","baz":["احکام امروز در هر نه دسته","اوقات شرعی و ساعات سعد و نحس","جهت پرهیز ستاره"],"ghofl":["تقویم ماه با رنگ‌بندی","رفتن به هر تاریخ دیگری","تبدیل تاریخ و محاسبه‌ی سن"],"dokme":"خرید اشتراک سالانه","azmayesh_matn":"دوره‌ی آزمایشی — {n} روز باقی مانده","azmayesh_akhar":"دوره‌ی آزمایشی — امروز آخرین روز","pas_az_kharid":"اشتراک شما فعال است"}},"kMin":-12,"kMax":5,"saakht":"1405/07/29 23:40"};
+const AT = D.AT, R = D.R;
+
+/* =====================================================================
+   app_core.js — هسته‌ی محاسباتی اپ، معادل جاوااسکریپتیِ saat_core.py
+
+   ⚠️ این فایل باید همیشه همان عددی را بدهد که پایتون می‌دهد. گاردش
+   `verify_app.py` است که هر دو را با node اجرا و مقابله می‌کند.
+
+   جدول‌های نجومی (سری‌های ماه و ماه نو) عمداً اینجا تایپ **نشده‌اند** —
+   `build_app.py` آنها را مستقیم از روی `saat_core.py` تولید و تزریق می‌کند،
+   تا اشتباه رونویسی ممکن نباشد. اینجا با نام AT در دسترس‌اند.
+   ===================================================================== */
+
+const DEG = Math.PI / 180, RAD = 180 / Math.PI;
+
+/* ---------- تبدیل تقویم‌ها ---------- */
+
+/* تقسیم صحیح با گرد شدن به سمت صفر — مثل پایتونِ اصلاح‌شده، نه Math.floor */
+const idiv = (a, b) => Math.trunc(a / b);
+
+function gToJdn(gy, gm, gd) {
+  let d = idiv((gy + idiv(gm - 8, 6) + 100100) * 1461, 4)
+        + idiv(153 * ((gm + 9) % 12) + 2, 5) + gd - 34840408;
+  return d - idiv(idiv(gy + 100100 + idiv(gm - 8, 6), 100) * 3, 4) + 752;
+}
+
+function jdnToG(jdn) {
+  let j = 4 * jdn + 139361631;
+  j += idiv(idiv(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
+  const i = idiv(mod(j, 1461), 4) * 5 + 308;
+  const gd = idiv(mod(i, 153), 5) + 1;
+  const gm = mod(idiv(i, 153), 12) + 1;
+  return [idiv(j, 1461) - 100100 + idiv(8 - gm, 6), gm, gd];
+}
+
+const mod = (a, b) => ((a % b) + b) % b;
+const JALALI_OFFSET = 1721060;
+
+function jToJdn(jy, jm, jd) {
+  const y = jy + 1595;
+  let days = -355668 + 365 * y + idiv(y, 33) * 8 + idiv(mod(y, 33) + 3, 4) + jd;
+  days += jm < 7 ? (jm - 1) * 31 : (jm - 7) * 30 + 186;
+  return days + JALALI_OFFSET;
+}
+
+const jLeap = jy => jToJdn(jy + 1, 1, 1) - jToJdn(jy, 1, 1) === 366;
+
+function jdnToJ(jdn) {
+  let jy = jdnToG(jdn)[0] - 621;
+  let k = jdn - jToJdn(jy, 1, 1);
+  if (k >= 0) {
+    if (k <= 185) return [jy, 1 + idiv(k, 31), mod(k, 31) + 1];
+    k -= 186;
+  } else {
+    jy -= 1; k += 179;
+    if (jLeap(jy)) k += 1;
+  }
+  return [jy, 7 + idiv(k, 30), mod(k, 30) + 1];
+}
+
+/* صفر = شنبه. لنگر: اول ژانویه‌ی ۲۰۰۰ شنبه بود. */
+const weekday = jdn => mod(jdn + 2, 7);
+
+/* ---------- تقویم قمری ----------
+   معیار رویت هلال در پایتون حساب می‌شود و نتیجه‌اش به شکل یک جدولِ فشرده
+   اینجا می‌آید: مبدأ + رشته‌ای از ۲۹ و ۳۰. پس همان تاریخی درمی‌آید که
+   verify_almanac.py با تقویم چاپی مقابله کرده. */
+let _hijriStarts = null;
+function hijriStarts() {
+  if (!_hijriStarts) {
+    let j = AT.hijri.base;
+    _hijriStarts = [j];
+    for (const c of AT.hijri.lens) { j += (c === "0" ? 29 : 30); _hijriStarts.push(j); }
+  }
+  return _hijriStarts;
+}
+
+function jdnToHijri(jdn) {
+  const s = hijriStarts();
+  if (jdn < s[0] || jdn > s[s.length - 1]) return null;
+  let lo = 0, hi = s.length - 1;
+  while (lo < hi) { const m = (lo + hi + 1) >> 1; if (s[m] <= jdn) lo = m; else hi = m - 1; }
+  const n = AT.hijri.firstIndex + lo;
+  return [idiv(n, 12) + 1, mod(n, 12) + 1, jdn - s[lo] + 1];
+}
+
+function hijriToJdn(hy, hm, hd) {
+  const n = (hy - 1) * 12 + (hm - 1) - AT.hijri.firstIndex;
+  const s = hijriStarts();
+  if (n < 0 || n >= s.length) return null;
+  return s[n] + hd - 1;
+}
+
+/* ---------- نجوم ---------- */
+
+function jdFromJdn(jdn, hoursUT) { return jdn - 0.5 + hoursUT / 24; }
+const centuries = jd => (jd - 2451545) / 36525;
+
+function deltaT(year) {
+  const y = year + 0.5;
+  if (y >= 2005 && y < 2050) { const t = y - 2000; return 62.92 + 0.32217 * t + 0.005589 * t * t; }
+  if (y >= 1986 && y < 2005) {
+    const t = y - 2000;
+    return 63.86 + 0.3345 * t - 0.060374 * t * t + 0.0017275 * t ** 3
+         + 0.000651814 * t ** 4 + 0.00002373599 * t ** 5;
+  }
+  if (y >= 1961 && y < 1986) { const t = y - 1975; return 45.45 + 1.067 * t - t * t / 260 - t ** 3 / 718; }
+  if (y >= 2050 && y < 2150) return -20 + 32 * ((y - 1820) / 100) ** 2 - 0.5628 * (2150 - y);
+  const u = (y - 1820) / 100;
+  return -20 + 32 * u * u;
+}
+
+function nutation(t) {
+  const om = 125.04452 - 1934.136261 * t + 0.0020708 * t * t + t ** 3 / 450000;
+  const ls = 280.4665 + 36000.7698 * t, lm = 218.3165 + 481267.8813 * t;
+  const o = om * DEG, a = ls * DEG, b = lm * DEG;
+  const dpsi = (-17.20 * Math.sin(o) - 1.32 * Math.sin(2 * a)
+              - 0.23 * Math.sin(2 * b) + 0.21 * Math.sin(2 * o)) / 3600;
+  const deps = (9.20 * Math.cos(o) + 0.57 * Math.cos(2 * a)
+              + 0.10 * Math.cos(2 * b) - 0.09 * Math.cos(2 * o)) / 3600;
+  const eps0 = 23 + 26 / 60 + 21.448 / 3600
+             - (46.8150 * t + 0.00059 * t * t - 0.001813 * t ** 3) / 3600;
+  return [dpsi, eps0 + deps, om];
+}
+
+function gmst(jd) {
+  const t = centuries(jd);
+  return mod(280.46061837 + 360.98564736629 * (jd - 2451545)
+           + 0.000387933 * t * t - t ** 3 / 38710000, 360);
+}
+
+function eclToEqu(lon, lat, eps) {
+  const l = lon * DEG, b = lat * DEG, e = eps * DEG;
+  const ra = Math.atan2(Math.sin(l) * Math.cos(e) - Math.tan(b) * Math.sin(e), Math.cos(l));
+  const dec = Math.asin(Math.sin(b) * Math.cos(e) + Math.cos(b) * Math.sin(e) * Math.sin(l));
+  return [mod(ra * RAD, 360), dec * RAD];
+}
+
+function sunLongitude(jdTT) {
+  const t = centuries(jdTT);
+  const l0 = 280.46646 + 36000.76983 * t + 0.0003032 * t * t;
+  const m = (357.52911 + 35999.05029 * t - 0.0001537 * t * t) * DEG;
+  const c = (1.914602 - 0.004817 * t - 0.000014 * t * t) * Math.sin(m)
+          + (0.019993 - 0.000101 * t) * Math.sin(2 * m)
+          + 0.000289 * Math.sin(3 * m);
+  const om = nutation(t)[2];
+  return mod(l0 + c - 0.00569 - 0.00478 * Math.sin(om * DEG), 360);
+}
+
+function sunRaDec(jdTT) {
+  const eps = nutation(centuries(jdTT))[1];
+  return eclToEqu(sunLongitude(jdTT), 0, eps);
+}
+
+function moonPosition(jdTT) {
+  const t = centuries(jdTT);
+  const lp = 218.3164477 + 481267.88123421 * t - 0.0015786 * t * t
+           + t ** 3 / 538841 - t ** 4 / 65194000;
+  const d = 297.8501921 + 445267.1114034 * t - 0.0018819 * t * t
+          + t ** 3 / 545868 - t ** 4 / 113065000;
+  const m = 357.5291092 + 35999.0502909 * t - 0.0001536 * t * t + t ** 3 / 24490000;
+  const mp = 134.9633964 + 477198.8675055 * t + 0.0087414 * t * t
+           + t ** 3 / 69699 - t ** 4 / 14712000;
+  const f = 93.2720950 + 483202.0175233 * t - 0.0036539 * t * t
+          - t ** 3 / 3526000 + t ** 4 / 863310000;
+  const a1 = 119.75 + 131.849 * t, a2 = 53.09 + 479264.290 * t, a3 = 313.45 + 481266.484 * t;
+  const e = 1 - 0.002516 * t - 0.0000074 * t * t;
+
+  let sl = 0, sr = 0, sb = 0;
+  for (const [cd, cm, cmp, cf, kl, kr] of AT.ml) {
+    const arg = (cd * d + cm * m + cmp * mp + cf * f) * DEG;
+    const ecc = Math.pow(e, Math.abs(cm));
+    sl += kl * ecc * Math.sin(arg);
+    sr += kr * ecc * Math.cos(arg);
+  }
+  for (const [cd, cm, cmp, cf, kb] of AT.mb) {
+    const arg = (cd * d + cm * m + cmp * mp + cf * f) * DEG;
+    sb += kb * Math.pow(e, Math.abs(cm)) * Math.sin(arg);
+  }
+  sl += 3958 * Math.sin(a1 * DEG) + 1962 * Math.sin((lp - f) * DEG) + 318 * Math.sin(a2 * DEG);
+  sb += -2235 * Math.sin(lp * DEG) + 382 * Math.sin(a3 * DEG)
+      + 175 * Math.sin((a1 - f) * DEG) + 175 * Math.sin((a1 + f) * DEG)
+      + 127 * Math.sin((lp - mp) * DEG) - 115 * Math.sin((lp + mp) * DEG);
+
+  const dpsi = nutation(t)[0];
+  return [mod(lp + sl / 1e6 + dpsi, 360), sb / 1e6, 385000.56 + sr / 1000];
+}
+
+const borjIndex = lon => Math.floor(mod(lon, 360) / 30);
+
+/* ---------- رویدادهای خورشیدی ----------
+   kind: منفی یک طلوع، صفر ظهر، مثبت یک غروب.
+   h0 ارتفاع هدف است، پس با همین یک تابع هم طلوع می‌گیریم هم اذان صبح و مغرب. */
+function solarEvent(jdn, lat, lon, h0, kind) {
+  const [gy] = jdnToG(jdn);
+  const dt = deltaT(gy) / 86400;
+  const jd0 = jdn - 0.5;
+  let m = 0.5;
+  for (let it = 0; it < 6; it++) {
+    const jdUT = jd0 + m;
+    const [ra, dec] = sunRaDec(jdUT + dt);
+    const ha = mod(gmst(jdUT) + lon - ra + 180, 360) - 180;
+    let dm;
+    if (kind === 0) dm = -ha / 360;
+    else {
+      const cosH = (Math.sin(h0 * DEG) - Math.sin(lat * DEG) * Math.sin(dec * DEG))
+                 / (Math.cos(lat * DEG) * Math.cos(dec * DEG));
+      if (Math.abs(cosH) > 1) return null;
+      const target = kind * Math.acos(cosH) * RAD;
+      dm = mod((target - ha) / 360 + 0.5, 1) - 0.5;
+    }
+    m += dm;
+  }
+  return jd0 + m;
+}
+
+/* شش وقت شرعی، بر حسب ساعت اعشاری محلی.
+   زاویه‌ها پیش‌فرض مؤسسه ژئوفیزیک دانشگاه تهران است. */
+const ANGLES = { fajr: -17.7, maghrib: -4.5 };
+
+function prayerTimes(jdn, lat, lon, tz, ang) {
+  ang = ang || ANGLES;
+  const toLocal = jd => jd === null ? null : mod((jd + 0.5 - jdn) * 24 + tz, 24);
+  const fajr = solarEvent(jdn, lat, lon, ang.fajr, -1);
+  const tolu = solarEvent(jdn, lat, lon, -0.8333, -1);
+  const zohr = solarEvent(jdn, lat, lon, 0, 0);
+  const ghorub = solarEvent(jdn, lat, lon, -0.8333, 1);
+  const maghrib = solarEvent(jdn, lat, lon, ang.maghrib, 1);
+  const fajrNext = solarEvent(jdn + 1, lat, lon, ang.fajr, -1);
+
+  /* نیمه‌شب شرعی: وسط فاصله‌ی مغرب تا اذان صبح فردا */
+  let nime = null;
+  if (maghrib !== null && fajrNext !== null) nime = mod((((maghrib + fajrNext) / 2
+      + 0.5 - jdn) * 24 + tz), 24);
+
+  return {
+    fajr: toLocal(fajr), tolu: toLocal(tolu), zohr: toLocal(zohr),
+    ghorub: toLocal(ghorub), maghrib: toLocal(maghrib), nime: nime,
+  };
+}
+
+/* ---------- برج قمر ----------
+   در لحظه‌ی ظهر شرعی — همان قراردادی که تقویم چاپی به کار می‌برد.
+
+   عمداً دو تکه است: تعیین خودِ برج یک بار محاسبه‌ی ماه می‌خواهد و برای همه‌ی
+   روزها لازم است (چون قوانین به آن شرط دارند)، ولی لحظه‌ی دقیقِ تغییر برج
+   چهل بار محاسبه می‌خواهد و فقط در صفحه‌ی یک روز دیده می‌شود. اگر این را هم
+   برای هر خانه‌ی تقویم ماه حساب می‌کردیم، هر بار باز کردن تقویم چند ثانیه
+   طول می‌کشید. */
+function moonBorj(jdn, lat, lon, tz, zohr) {
+  const [gy] = jdnToG(jdn);
+  const dt = deltaT(gy) / 86400;
+  const jdZohr = jdn - 0.5 + ((zohr === null ? 12 : zohr) - tz) / 24;
+  return borjIndex(moonPosition(jdZohr + dt)[0]);
+}
+
+function borjChange(jdn, tz, zohr, b) {
+  const [gy] = jdnToG(jdn);
+  const dt = deltaT(gy) / 86400;
+  const jdZohr = jdn - 0.5 + ((zohr === null ? 12 : zohr) - tz) / 24;
+  if (borjIndex(moonPosition(jdZohr + 1 + dt)[0]) === b) return null;
+  let lo = jdZohr, hi = jdZohr + 1;
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    if (borjIndex(moonPosition(mid + dt)[0]) === b) lo = mid; else hi = mid;
+  }
+  return mod((hi + 0.5 - jdn) * 24 + tz, 24);
+}
+
+/* ---------- قمر در عقرب ---------- */
+const AQRAB = 7;
+function aqrabStatus(jdn, lat, lon, tz, zohr) {
+  const [gy] = jdnToG(jdn);
+  const dt = deltaT(gy) / 86400;
+  const jd0 = jdn - 0.5 + ((zohr === null ? 12 : zohr) - tz) / 24;
+  const at = jd => borjIndex(moonPosition(jd + dt)[0]);
+  const inAqrab = at(jd0) === AQRAB;
+  const hit = b => inAqrab ? b !== AQRAB : b === AQRAB;
+
+  let prev = jd0, jd = jd0;
+  for (let i = 0; i < 160; i++) {
+    jd += 0.25;
+    if (hit(at(jd))) {
+      let lo = prev, hi = jd;
+      for (let k = 0; k < 40; k++) {
+        const mid = (lo + hi) / 2;
+        if (hit(at(mid))) hi = mid; else lo = mid;
+      }
+      const jdnEv = Math.floor(hi + 0.5 + tz / 24);
+      return { inAqrab, jdn: jdnEv, saat: mod((hi + 0.5 - jdnEv) * 24 + tz, 24) };
+    }
+    prev = jd;
+  }
+  return null;
+}
+
+/* ---------- ساعات سیارات ---------- */
+function planetaryHours(tolu, ghorub, toluFarda, w) {
+  const dl = (ghorub - tolu) / 12, nl = (toluFarda + 24 - ghorub) / 12;
+  const st = AT.chaldean.indexOf(AT.hakemRooz[w]);
+  const out = [];
+  for (let i = 0; i < 24; i++) {
+    const p = AT.chaldean[mod(st + i, 7)];
+    const s = i < 12 ? tolu + i * dl : ghorub + (i - 12) * nl;
+    out.push({ i, p, tabe: AT.tabe[p], rang: AT.rangSaat[AT.tabe[p]],
+               az: s, ta: s + (i < 12 ? dl : nl),
+               nooe: i < 12 ? "روز" : "شب", sh: i < 12 ? i + 1 : i - 11 });
+  }
+  return out;
+}
+
+/* ---------- ستاره سکزیلدوز ---------- */
+function torkiDay(jdn) {
+  const t = AT.torki;
+  if (jdn < t.base || jdn >= t.base + t.days.length) return 0;
+  return t.days.charCodeAt(jdn - t.base) - 64;    /* A=1 ... */
+}
+const setareEbarat = n => n.startsWith("مابین") ? n : "در " + n;
+
+/* ---------- موتور قانون ----------
+   آینه‌ی rules_engine.py. هر تغییری اینجا باید آنجا هم بیفتد و برعکس؛
+   verify_app.py هر دو را روی هزاران روز مقابله می‌کند. */
+
+const HAME = "hame";
+const JAHAT_FA = { khoob: "خوب", bad: "بد", khonsa: "خنثی" };
+const alamat = j => j === "khoob" ? 1 : j === "bad" ? -1 : 0;
+
+function matchShart(shart, day) {
+  for (const key in shart) {
+    const v = shart[key];
+    if (key === "rooz_hafte") { if (v.indexOf(AT.roozHafte[day.w]) < 0) return false; }
+    else if (key === "rooz_qamari") { if (v.indexOf(day.q[0]) < 0) return false; }
+    else if (key === "mah_va_rooz_qamari") {
+      if (!v.some(x => x[0] === day.q[1] && x[1] === day.q[0])) return false;
+    }
+    else if (key === "borj_qamar") { if (v.indexOf(AT.borooj[day.b]) < 0) return false; }
+    else if (key === "torki_mod10") {
+      if (!day.tk) return false;
+      if (v.indexOf(mod(day.tk - 1, 10)) < 0) return false;
+    }
+    else return false;
+  }
+  return true;
+}
+
+function cheraMatn(shart, day) {
+  const out = [];
+  for (const key in shart) {
+    if (key === "rooz_hafte") out.push(AT.roozHafte[day.w]);
+    else if (key === "rooz_qamari" || key === "mah_va_rooz_qamari")
+      out.push(day.q[0] + " " + (day.q[1] ? AT.mahQamari[day.q[1] - 1] : ""));
+    else if (key === "borj_qamar") out.push("قمر در " + AT.borooj[day.b]);
+    else if (key === "torki_mod10")
+      out.push("ستاره " + setareEbarat(AT.jahatSekiz[mod(day.tk - 1, 10)]));
+  }
+  return out.join("، ");
+}
+
+function evaluateDay(day, R) {
+  const out = [];
+  const push = (id, jahat, shedat, matn, manba, bar, kam, chera) => {
+    const b = {};
+    for (const k in (bar || {})) {
+      const j = JAHAT_FA[bar[k]] || "خنثی";
+      if (k === HAME) b["*"] = [j, shedat];
+      else b[k] = [j, (kam || []).indexOf(k) >= 0 ? 1 : shedat];
+    }
+    out.push([id, JAHAT_FA[jahat] || "خنثی", shedat, chera, b, matn, manba]);
+  };
+
+  for (const q of R.qavanin)
+    if (matchShart(q.shart || {}, day))
+      push(q.id, q.jahat, q.shedat || 1, q.matn, q.manba,
+           q.barchasb, q.shedat_kam, cheraMatn(q.shart || {}, day));
+
+  const ek = R.ekhtiarat_rooz_qamari.rooz;
+  if (day.q[0] !== null) {
+    const it = ek[String(day.q[0])];
+    if (it && it.jahat !== "nadarad")
+      push("ekhtiarat-" + day.q[0], it.jahat, 2, it.matn, "ekhtiarat",
+           it.barchasb, it.shedat_kam,
+           day.q[0] + " " + AT.mahQamari[day.q[1] - 1]);
+  }
+
+  const sy = R.sekiz_yilduz;
+  if (sy.faal && day.tk) {
+    const k = String(mod(day.tk - 1, 10));
+    const it = sy.jadval[k];
+    if (it)
+      push("sekiz-" + k, it.jahat, 2,
+           "ستاره " + setareEbarat(it.jahat_setare) + " است. " + it.matn,
+           "sekiz", it.barchasb, null,
+           "ستاره " + setareEbarat(it.jahat_setare));
+  }
+  return out;
+}
+
+/* سهم یک حکم در یک دسته */
+function sahm(a, name) {
+  const b = a[4]; let n = 0;
+  if (b["*"]) n += (b["*"][0] === "خوب" ? 1 : b["*"][0] === "بد" ? -1 : 0) * b["*"][1];
+  if (b[name]) n += (b[name][0] === "خوب" ? 1 : b[name][0] === "بد" ? -1 : 0) * b[name][1];
+  return n;
+}
+
+function summarizeDay(ahkam, R) {
+  const kolli = ahkam.reduce((s, a) =>
+    s + (a[1] === "خوب" ? 1 : a[1] === "بد" ? -1 : 0) * a[2], 0);
+  const ds = AT.dasteha.map(d => ahkam.reduce((s, a) => s + sahm(a, d), 0));
+  let hi = R.halat_rooz.length - 1;
+  for (let i = 0; i < R.halat_rooz.length; i++)
+    if (kolli >= R.halat_rooz[i].az) { hi = i; break; }
+  return { kolli, ds, h: hi };
+}
+
+/* ---------- ساخت یک روز ----------
+   سبک نگه داشته شده تا تقویم ماه سریع باز شود. آنچه فقط در صفحه‌ی یک روز
+   دیده می‌شود (لحظه‌ی تغییر برج و وضعیت قمر در عقرب) با dayExtras می‌آید. */
+function buildDay(jdn, loc) {
+  const [gy, gm, gd] = jdnToG(jdn);
+  const [jy, jm, jd] = jdnToJ(jdn);
+  const h = jdnToHijri(jdn);
+  const p = prayerTimes(jdn, loc.lat, loc.lon, loc.tz);
+  const tk = torkiDay(jdn);
+  return {
+    jdn, sh: [jy, jm, jd], mi: [gy, gm, gd], w: weekday(jdn),
+    q: h ? [h[2], h[1], h[0]] : [null, null, null],
+    b: moonBorj(jdn, loc.lat, loc.lon, loc.tz, p.zohr),
+    tk, p,
+    st: tk ? AT.jahatSekiz[mod(tk - 1, 10)] : "",
+  };
+}
+
+function dayExtras(day, loc) {
+  return {
+    bt: borjChange(day.jdn, loc.tz, day.p.zohr, day.b),
+    aq: aqrabStatus(day.jdn, loc.lat, loc.lon, loc.tz, day.p.zohr),
+  };
+}
+
+
+/* ===================== رابط کاربری ===================== */
+const $ = s => document.querySelector(s);
+const fa = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const pad2 = n => (n < 10 ? "0" : "") + n;
+const hm = m => m === null || m === undefined ? "—"
+  : fa(pad2(Math.floor(mod(m, 24))) + ":" + pad2(Math.round(mod(m, 24) % 1 * 60)));
+
+function get(k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } }
+function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+let fs = get("sk_fs", "16"), theme = get("sk_theme", "auto");
+let loc = AT.shahrha.find(s => s.n === get("sk_city", "تهران")) || AT.shahrha[0];
+
+function applySettings() {
+  document.documentElement.style.setProperty("--base", fs + "px");
+  if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", theme);
+  document.querySelectorAll("[data-fs]").forEach(b => b.classList.toggle("on", b.dataset.fs === fs));
+  document.querySelectorAll("[data-th]").forEach(b => b.classList.toggle("on", b.dataset.th === theme));
+}
+
+function todayJdn() {
+  const n = new Date();
+  return gToJdn(n.getFullYear(), n.getMonth() + 1, n.getDate());
+}
+
+/* ---------- دوره‌ی آزمایشی و اشتراک ----------
+   ده روز همه‌چیز باز است؛ بعد از آن اپ **قفل کامل نمی‌شود** بلکه به نسخه‌ی
+   رایگانِ همیشگی برمی‌گردد: صفحه‌ی امروز با تمام جزئیاتش باز می‌ماند و فقط
+   تقویم ماه و رفتن به تاریخ‌های دیگر و ابزار قفل می‌شوند.
+
+   چرا این‌طور: اپی که کامل قفل شود پاک می‌شود و فراموش. اپی که هر روز
+   استفاده شود، روزی که کاربر بخواهد برنامه بریزد مشترک می‌شود.
+
+   ⚠️ لحظه‌ی شروع دوره را از خود اندروید می‌گیریم (زمان نصب بسته)، نه از
+   حافظه‌ی مرورگر — چون پاک کردن داده‌های اپ حافظه را خالی می‌کند ولی زمان
+   نصب سر جایش می‌ماند. با حذف و نصب دوباره‌ی اپ البته ریست می‌شود؛ بستن
+   کامل آن راه بدون سرور ندارد. */
+const ES = R.eshterak || { rooz_azmayeshi: 10 };
+const ROOZ = 86400000;
+const SAL = 365 * ROOZ;              /* طول بازگشایی با کد مدیر */
+
+function firstMs() {
+  /* دستکاری دستی از صفحه‌ی مدیر، برای آزمایش روی خود گوشی. بر پل اندروید
+     مقدم است، وگرنه دکمه‌های «در دوره / دوره تمام» روی دستگاه بی‌اثرند. */
+  const ov = +get("sk_first_ov", 0);
+  if (ov) return ov;
+  try {
+    if (window.SaatKhoob && SaatKhoob.firstInstall) {
+      const t = SaatKhoob.firstInstall();
+      if (t > 0) return t;
+    }
+  } catch (e) {}
+  let v = +get("sk_first", 0);
+  if (!v) { v = Date.now(); set("sk_first", String(v)); }
+  return v;
+}
+
+/* لحظه‌ی پایان بازگشایی با کد مدیر (میلی‌ثانیه)، صفر یعنی بازگشایی‌ای نیست */
+const unlockTa = () => +get("sk_unlock", 0) || 0;
+
+/* روزهای باقی‌مانده‌ی بازگشایی مدیر؛ صفر یعنی ندارد یا تمام شده */
+function unlockLeft() {
+  const t = unlockTa() - Date.now();
+  return t > 0 ? Math.ceil(t / ROOZ) : 0;
+}
+
+function isPaid() {
+  /* نسخه‌ی آیفون (وب‌اپ) قفل ندارد: برای دوستان ساخته می‌شود نه برای فروش،
+     و حافظه‌ی سافاری هم آن‌قدر پایدار نیست که دوره‌ی آزمایشی معنی بدهد.
+     این پرچم را build_ios.py قبل از اسکریپت اصلی می‌گذارد.
+     ⚠️ `typeof` لازم است: verify_app.py این اسکریپت را در node خام اجرا
+     می‌کند و آنجا window اصلاً وجود ندارد. */
+  if (typeof window !== "undefined" && window.SK_BAZ) return true;
+  if (unlockLeft() > 0) return true;                      // کد مدیر
+  try {
+    if (get("sk_paid", "") === "1") return true;          // برای آزمایش
+    if (window.SaatKhoob && SaatKhoob.isPaid) return !!SaatKhoob.isPaid();
+  } catch (e) {}
+  return false;
+}
+
+/* روزهای باقی‌مانده‌ی دوره‌ی آزمایشی؛ صفر یعنی تمام شده */
+function trialLeft() {
+  const used = Math.floor((Date.now() - firstMs()) / ROOZ);
+  return Math.max(0, ES.rooz_azmayeshi - used);
+}
+const isFull = () => isPaid() || trialLeft() > 0;
+
+/* ---------- کلید مخفی مدیر ----------
+   دو حرکت، هر دو «ده ثانیه نگه داشتن»، روی دو هدف جدا. چون هیچ‌کدام با
+   یک ضربه‌ی تصادفی پیش نمی‌آید، کاربر معمولی به آن برنمی‌خورد:
+
+     ۱) ده ثانیه روی دکمه‌ی «امروز»  ->  تاریخ به نزدیک‌ترین پانزده شعبان می‌رود
+     ۲) ده ثانیه روی خودِ تاریخ       ->  صفحه‌ی مدیر باز می‌شود
+        (قدم دوم فقط وقتی کار می‌کند که تاریخِ روی صفحه پانزده شعبان باشد)
+
+   قدم اول را اضافه کردم چون در حالت قفل، رسیدن به پانزده شعبان با فلش‌ها
+   صدها ضربه می‌خواست و کلید عملاً سالی یک روز قابل استفاده بود.
+
+   کد بازگشایی هفت رقم است و **هر روز عوض می‌شود**:
+     رقم اول      = شماره‌ی روز هفته (یکشنبه ۱ ، دوشنبه ۲ ... جمعه ۶ ، شنبه ۷)
+     چهار رقم بعد = عدد ثابت ۱۳۵۵
+     دو رقم آخر   = روز ماه شمسی، دو رقمی (ششم -> ۰۶ ، بیست‌وهفتم -> ۲۷)
+   مبنا **تاریخ امروزِ خود گوشی** است، نه تاریخی که روی صفحه دیده می‌شود. */
+const ADMIN_SABET = "1355";
+const SHABAN = 8;                    /* شعبان ماه هشتم قمری است */
+
+function adminCode(jdn) {
+  const w = weekday(jdn);            /* صفر = شنبه */
+  return String(w === 0 ? 7 : w) + ADMIN_SABET + pad2(jdnToJ(jdn)[2]);
+}
+
+const isKelid = day => day.q[0] === 15 && day.q[1] === SHABAN;
+
+/* نزدیک‌ترین پانزده شعبان از این تاریخ به بعد */
+function baediShaban(from) {
+  for (let j = from; j < from + 400; j++) {
+    const h = jdnToHijri(j);
+    if (h && h[1] === SHABAN && h[2] === 15) return j;
+  }
+  return from;
+}
+
+let cur = todayJdn(), view = "rooz", chosen = -1, hoursOpen = false;
+
+/* ---------- محاسبه با حافظه ---------- */
+let cache = new Map();
+function getDay(jdn) {
+  let e = cache.get(jdn);
+  if (!e) {
+    const day = buildDay(jdn, loc);
+    const a = evaluateDay(day, R);
+    e = { day, a, s: summarizeDay(a, R) };
+    if (cache.size > 900) cache.clear();
+    cache.set(jdn, e);
+  }
+  return e;
+}
+const clearCache = () => cache = new Map();
+
+function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function mix(a, b, t) {
+  const p = h => { h = h.replace("#", ""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); };
+  const [x, y] = [p(a), p(b)];
+  return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")";
+}
+function rangNomre(k) {
+  const T = R.tanzim_rang, lo = T.kamine, mid = T.miane, hi = T.bishine;
+  const c1 = css("--sorkh"), c2 = css("--zard"), c3 = css("--sabz");
+  if (k <= lo) return c1;
+  if (k >= hi) return c3;
+  return k < mid ? mix(c1, c2, (k - lo) / (mid - lo)) : mix(c2, c3, (k - mid) / (hi - mid));
+}
+function nomreMatn(k) {
+  if (k === 0) return "نمره‌ی کلی صفر";
+  if (k > 0) return "نمره‌ی کلی " + fa(k) + " از " + fa(D.kMax);
+  return "نمره‌ی کلی منفی " + fa(-k) + " از منفی " + fa(-D.kMin);
+}
+
+const RANG_SAAT = { "سبز": "--sabz", "زرد": "--zard", "قرمز": "--sorkh" };
+const ZAVIE = [90, 135, 180, 225, 270, 315, 0, 45];
+
+function golNama(idx) {
+  const cx = 85, cy = 85, r = 58, d = 22.5;
+  const pt = (a, rad) => [(cx + rad * Math.sin(a * DEG)).toFixed(1),
+                          (cy - rad * Math.cos(a * DEG)).toFixed(1)];
+  let w = "";
+  for (let i = 0; i < 8; i++) {
+    const [x1, y1] = pt(ZAVIE[i] - d, r), [x2, y2] = pt(ZAVIE[i] + d, r);
+    w += `<path class="gol ${i === idx ? "on" : ""}" opacity="${i === idx ? 1 : .35}"
+      d="M${cx},${cy} L${x1},${y1} A${r},${r} 0 0 1 ${x2},${y2} Z"></path>`;
+  }
+  const mid = idx >= 8
+    ? `<text class="golmid" x="${cx}" y="${cy + 5}" text-anchor="middle">${idx === 8 ? "زیر" : "بالا"}</text>`
+    : `<circle cx="${cx}" cy="${cy}" r="9" fill="var(--kaghaz2)"></circle>`;
+  return `<svg viewBox="0 0 170 186" role="img" aria-label="جای ستاره">${w}
+    <circle class="golx" cx="${cx}" cy="${cy}" r="${r}"></circle>${mid}
+    ${[["شمال",85,14],["مشرق",158,90],["جنوب",85,172],["مغرب",12,90]].map(
+      ([t,x,y]) => `<text class="gollb" x="${x}" y="${y}" text-anchor="middle">${t}</text>`).join("")}
+  </svg>`;
+}
+
+/* فقط وقتی صدا زده می‌شود که روز ماه ترکی معلوم باشد. اگر نباشد، کل بخش
+   «جهت پرهیز» از صفحه حذف می‌شود — نه اینکه پیغام «در جدول نیست» نشان بدهد. */
+function sekizCard(e) {
+  const S = R.sekiz_yilduz, day = e.day;
+  const idx = mod(day.tk - 1, 10);
+  const name = AT.jahatSekiz[idx], amoodi = idx >= 8;
+  const hokm = e.a.find(a => a[0] === "sekiz-" + idx);
+  return `<div class="sekiz">${golNama(idx)}<div class="txt">
+      <div class="jahat">${amoodi ? "ستاره " + name + " است" : name}</div>
+      <div class="dast">${amoodi
+        ? "امروز ستاره جهت افقی ندارد، پس سمتی برای پرهیز نیست." : S.dastoor}</div>
+      ${hokm ? `<div class="hok">${hokm[5]}</div>` : ""}
+      <button class="info" id="sekiz-info">سکزیلدوز چیست؟</button>
+    </div></div>`;
+}
+
+/* ---------- نمای روز ---------- */
+function viewRooz(e) {
+  const day = e.day, H = R.halat_rooz[e.s.h];
+  const ex = dayExtras(day, loc);
+  const nx = getDay(day.jdn + 1).day;
+  const hs = planetaryHours(day.p.tolu, day.p.ghorub, nx.p.tolu, day.w);
+
+  const now = new Date();
+  const isToday = day.jdn === todayJdn();
+  const nowMin = isToday ? now.getHours() + now.getMinutes() / 60 : -1;
+  let act = -1;
+  if (nowMin >= 0) {
+    act = hs.findIndex(h => nowMin >= h.az && nowMin < h.ta);
+    if (act < 0) act = hs.findIndex(h => nowMin + 24 >= h.az && nowMin + 24 < h.ta);
+  }
+  const from = nowMin < 0 ? day.p.tolu : nowMin;
+  const nextGood = hs.find(h => h.az > from && h.rang === "سبز");
+
+  const owghat = [["اذان صبح", day.p.fajr], ["طلوع آفتاب", day.p.tolu],
+                  ["اذان ظهر", day.p.zohr], ["غروب آفتاب", day.p.ghorub],
+                  ["اذان مغرب", day.p.maghrib], ["نیمه‌شب شرعی", day.p.nime]]
+    .map(([n, v]) => `<div><span>${n}</span><b>${hm(v)}</b></div>`).join("");
+
+  const chips = [
+    `<span class="chip">قمر در <b>${AT.borooj[day.b]}</b></span>`,
+    ex.bt !== null ? `<span class="chip">تغییر برج <b>${hm(ex.bt)}</b></span>` : "",
+    ex.aq ? `<span class="chip">${ex.aq.inAqrab ? "قمر در عقرب، خروج" : "ورود بعدی به عقرب"}
+       <b>${(() => { const [y,m,d] = jdnToJ(ex.aq.jdn); return fa(d) + " " + AT.mahShamsi[m-1]; })()}
+       ${hm(ex.aq.saat)}</b></span>` : "",
+  ].join("");
+
+  const rows = AT.dasteha.map((d, i) => {
+    const n = e.s.ds[i];
+    const w = Math.min(Math.abs(n) / 8, 1) * 50;
+    const bar = n === 0 ? `<i style="right:49%;width:2%;background:var(--morakkab2)"></i>`
+      : n > 0 ? `<i style="left:50%;width:${w}%;background:var(--sabz)"></i>`
+              : `<i style="right:50%;width:${w}%;background:var(--sorkh)"></i>`;
+    return `<button class="drow" data-d="${i}"><span class="dname">${d}</span>
+      <span class="dbar">${bar}</span>
+      <span class="dstate ${n >= 2 ? "k" : n <= -2 ? "b" : ""}">${
+        n >= 2 ? "خوب" : n <= -2 ? "بد" : "خنثی"}</span></button>`;
+  }).join("");
+
+  const strip = hs.map((h, i) => `<span class="${i === act ? "on" : ""}" title="${h.p}"
+      style="background:var(${RANG_SAAT[h.rang]})"></span>`).join("");
+  const list = hs.map(h => `<div><b>${hm(h.az)}</b>
+      <span class="dot" style="background:var(${RANG_SAAT[h.rang]})"></span>
+      <em>${h.p} — ${h.tabe}</em>
+      <span style="color:var(--morakkab2);font-size:.78rem">${h.nooe} ${fa(h.sh)}</span></div>`).join("");
+
+  const y = R.daf_e_nahoosat;
+  return `
+    <div class="banner" style="background:${H.rang}">
+      <h2>${H.matn}</h2>
+      ${H.satr_ezafe.map(x => `<p>${x}</p>`).join("")}
+      <div class="nomre">${nomreMatn(e.s.kolli)}</div>
+    </div>
+    <div class="aseman">${chips}</div>
+
+    <h3 class="sec">اوقات شرعی — ${loc.n}</h3>
+    <div class="owghat">${owghat}</div>
+
+    ${day.tk ? `<h3 class="sec">جهت پرهیز</h3>${sekizCard(e)}` : ""}
+
+    <h3 class="sec">کارها</h3>
+    <div class="dlist">${rows}</div>
+
+    <h3 class="sec">ساعات</h3>
+    <div class="hnow">
+      ${act >= 0 ? `<span class="dot" style="background:var(${RANG_SAAT[hs[act].rang]})"></span>
+         <span>ساعت این لحظه: <b>${hs[act].p}</b> (${hs[act].tabe})</span>`
+        : `<span>ساعت اول روز: <b>${hs[0].p}</b> (${hs[0].tabe})</span>`}
+      ${nextGood ? `<span style="color:var(--morakkab2)">ساعت خوب بعدی: ${hm(nextGood.az)} ${nextGood.p}</span>` : ""}
+    </div>
+    <div class="hstrip">${strip}</div>
+    <button class="more" id="more">${hoursOpen ? "بستن" : "همه‌ی بیست‌وچهار ساعت"}</button>
+    <div class="hlist" id="hlist" ${hoursOpen ? "" : "hidden"}>${list}</div>
+
+    ${(H.satr_ezafe.length && y && y.matn) ? `<div class="yaddasht"><b>${y.onvan}</b>${y.matn}</div>` : ""}
+    <div class="pa">${loc.n}</div>`;
+}
+
+/* ---------- صفحه‌ی قفل ---------- */
+function viewGhofl() {
+  const li = a => a.map(x => `<li>${x}</li>`).join("");
+  return `<div class="ghofl">
+    <div class="ghofl-neshan">قفل</div>
+    <h2>${ES.onvan}</h2>
+    <p>${ES.matn}</p>
+    <div class="ghofl-do">
+      <div class="baz"><b>همیشه رایگان</b><ul>${li(ES.baz || [])}</ul></div>
+      <div class="baste"><b>با اشتراک</b><ul>${li(ES.ghofl || [])}</ul></div>
+    </div>
+    <button class="kharid" id="kharid">${ES.dokme}</button>
+  </div>`;
+}
+
+/* ---------- صفحه‌ی مدیر ----------
+   هرچه پنهان است اینجا جمع شده: وضعیت قفل، بازگشایی یک‌ساله با کد،
+   دکمه‌های آزمایش، و اطلاعات فنی که اگر یک سال بعد چیزی مشکوک شد بشود
+   از خود گوشی خواند.
+
+   ⚠️ خودِ کد عمداً اینجا نوشته **نمی‌شود** — وگرنه هر کسی که به این صفحه
+   برسد قفل را باز می‌کند. قاعده‌اش در شیت «راهنما»ی فایل اکسل است. */
+let admPayam = null;                 /* ["ok"|"no", متن] پیغام آخرین کار */
+
+function msTarikh(ms) {
+  const d = new Date(ms);
+  const [y, m, dd] = jdnToJ(gToJdn(d.getFullYear(), d.getMonth() + 1, d.getDate()));
+  return fa(dd) + " " + AT.mahShamsi[m - 1] + " " + fa(y);
+}
+const jTarikh = j => {
+  const [y, m, d] = jdnToJ(j);
+  return fa(d) + " " + AT.mahShamsi[m - 1] + " " + fa(y);
+};
+
+function viewAdmin() {
+  const u = unlockLeft(), n = trialLeft();
+  const vaz = u > 0 ? "باز با کد مدیر — " + fa(u) + " روز مانده"
+            : get("sk_paid", "") === "1" ? "مشترک (دستی، برای آزمایش)"
+            : isPaid() ? "مشترک"
+            : n > 0 ? "دوره‌ی آزمایشی — " + fa(n) + " روز مانده"
+            : "قفل — نسخه‌ی رایگان";
+
+  const pol = (() => {
+    if (!window.SaatKhoob) return "نیست (در مرورگر اجرا شده)";
+    try { return "وصل است، اشتراک بازار: "
+        + (SaatKhoob.isPaid && SaatKhoob.isPaid() ? "فعال" : "غیرفعال"); }
+    catch (e) { return "وصل است، ولی پاسخ نداد"; }
+  })();
+
+  const tk = AT.torki;
+  const tkMatn = tk.days
+    ? jTarikh(tk.base) + " تا " + jTarikh(tk.base + tk.days.length - 1)
+      + "  (" + fa(tk.days.length) + " روز)"
+    : "بارگزاری نشده";
+
+  const fann = [
+    ["وضعیت", vaz],
+    /* ⚠️ `+` لازم است: get رشته برمی‌گرداند و رشته‌ی "0" خودش درست است */
+    ["شروع دوره", msTarikh(firstMs())
+       + (+get("sk_first_ov", 0) ? "  (دستکاری‌شده)" : "")],
+    ["طول دوره", fa(ES.rooz_azmayeshi) + " روز"],
+    ["پایان بازگشایی", u > 0 ? msTarikh(unlockTa()) : "—"],
+    ["پل اندروید", pol],
+    ["ماه ترکی", tkMatn],
+    ["جدول قمری", fa(AT.hijri.lens.length + 1) + " ماه"],
+    ["شماره‌ی قوانین", fa((R.qavanin || []).length) + " قانون، "
+       + fa(AT.dasteha.length) + " دسته"],
+    ["شهر", loc.n],
+    ["ساخت", D.saakht ? fa(D.saakht) : "—"],
+  ].map(([k, v]) => `<b>${k}</b><span>${v}</span>`).join("");
+
+  const pay = admPayam
+    ? `<p class="apayam ${admPayam[0]}">${admPayam[1]}</p>` : "";
+
+  return `<div class="adm">
+    <h2>تنظیمات مدیر</h2>
+    <p class="zir">این صفحه برای کاربر وجود ندارد. از همین‌جا می‌شود قفل را
+      باز کرد، حالت‌های مختلف را آزمود، و وضعیت واقعی اپ را دید.</p>
+
+    <div class="abox">
+      <h4>بازگشایی یک‌ساله</h4>
+      <p>کد هفت‌رقمی امروز را بزنید. قفل برای یک سال کامل باز می‌شود و تا
+        آن تاریخ همه‌چیز بازاست، حتی اگر اپ بسته و باز شود.
+        کد هر روز عوض می‌شود؛ قاعده‌اش در شیت «راهنما»ی فایل اکسل نوشته شده.</p>
+      <div class="akey">
+        <input id="adm-code" inputmode="numeric" maxlength="7"
+               autocomplete="off" placeholder="۷ رقم" aria-label="کد بازگشایی">
+        <button id="adm-baz">باز کن</button>
+      </div>
+      ${pay}
+      ${u > 0 ? `<div class="abtns" style="margin-top:.7rem">
+        <button class="khatar" data-adm="bastan">برداشتن بازگشایی</button></div>` : ""}
+    </div>
+
+    <div class="abox">
+      <h4>وضعیت و اطلاعات فنی</h4>
+      <div class="afeh">${fann}</div>
+    </div>
+
+    <div class="abox">
+      <h4>حالت‌های آزمایشی</h4>
+      <p>برای دیدن اینکه کاربر در هر حالت چه می‌بیند. این سه دکمه فقط حافظه‌ی
+        خود اپ را عوض می‌کنند و روی پرداخت واقعی اثری ندارند.</p>
+      <div class="abtns">
+        <button data-adm="azmayesh">دوره از امروز</button>
+        <button data-adm="tamam">دوره تمام‌شده</button>
+        <button data-adm="kharid">مشترک</button>
+        <button data-adm="vaghei">برگشت به واقعی</button>
+      </div>
+    </div>
+
+    <div class="abox">
+      <h4>پاک کردن کامل</h4>
+      <p>همه‌ی حافظه‌ی اپ را خالی می‌کند: بازگشایی، حالت آزمایشی، شهر،
+        اندازه‌ی خط و تم. اپ دوباره بار می‌شود. زمان نصب بسته پاک نمی‌شود،
+        پس دوره‌ی آزمایشی از اول شروع نمی‌شود.</p>
+      <div class="abtns"><button class="khatar" data-adm="paak">پاک کن</button></div>
+    </div>
+
+    <div class="abtns" style="margin-top:1.1rem;justify-content:center">
+      <button id="adm-close">بستن صفحه‌ی مدیر</button>
+    </div>
+  </div>`;
+}
+
+function admBaz() {
+  const v = toEn($("#adm-code").value || "").replace(/\D/g, "");
+  if (v === adminCode(todayJdn())) {
+    set("sk_unlock", String(Date.now() + SAL));
+    admPayam = ["ok", "قفل باز شد. نسخه‌ی کامل تا "
+      + msTarikh(unlockTa()) + " فعال است."];
+  } else {
+    admPayam = ["no", "کد درست نیست. کد هر روز عوض می‌شود — "
+      + "قاعده‌اش در شیت «راهنما»ی فایل اکسل است."];
+  }
+  render();
+}
+
+function admAmal(a) {
+  if (a === "bastan") { set("sk_unlock", "0"); admPayam = ["no", "بازگشایی برداشته شد."]; }
+  if (a === "azmayesh") {
+    set("sk_paid", "0"); set("sk_unlock", "0");
+    set("sk_first_ov", String(Date.now()));
+    admPayam = ["ok", "دوره‌ی آزمایشی از همین حالا شروع شد."];
+  }
+  if (a === "tamam") {
+    set("sk_paid", "0"); set("sk_unlock", "0");
+    set("sk_first_ov", String(Date.now() - (ES.rooz_azmayeshi + 1) * ROOZ));
+    admPayam = ["ok", "دوره‌ی آزمایشی تمام‌شده فرض شد؛ اپ در حالت رایگان است."];
+  }
+  if (a === "kharid") { set("sk_paid", "1"); admPayam = ["ok", "حالت مشترک روشن شد."]; }
+  if (a === "vaghei") {
+    set("sk_paid", "0"); set("sk_first_ov", "0");
+    admPayam = ["ok", "دستکاری‌ها برداشته شد؛ وضعیت واقعی دستگاه برگشت."];
+  }
+  if (a === "paak") {
+    try { localStorage.clear(); } catch (e) {}
+    location.reload();
+    return;
+  }
+  render();
+}
+
+/* ---------- تقویم ماه ---------- */
+function viewMah(e) {
+  const [jy, jm] = e.day.sh;
+  const first = jToJdn(jy, jm, 1);
+  const next = jm === 12 ? jToJdn(jy + 1, 1, 1) : jToJdn(jy, jm + 1, 1);
+  const n = next - first;
+
+  const chips = [`<button data-c="-1" class="${chosen < 0 ? "on" : ""}">حال کلی</button>`]
+    .concat(AT.dasteha.map((d, i) =>
+      `<button data-c="${i}" class="${chosen === i ? "on" : ""}">${d}</button>`)).join("");
+
+  let cells = "";
+  for (let i = 0; i < weekday(first); i++) cells += `<div class="cell empty"></div>`;
+  for (let k = 0; k < n; k++) {
+    const g = getDay(first + k);
+    const v = chosen < 0 ? g.s.kolli : g.s.ds[chosen] * 1.5;
+    cells += `<button class="cell ${first + k === cur ? "sel" : ""}" data-j="${first + k}"
+      style="background:${rangNomre(v)}">${fa(g.day.sh[2])}<small>${fa(g.day.q[0] || "")}</small></button>`;
+  }
+
+  return `<div class="mnav">
+      <button class="nav" id="mprev" aria-label="ماه قبل">‹</button>
+      <div class="mtitle">${AT.mahShamsi[jm - 1]} ${fa(jy)}</div>
+      <button class="nav" id="mnext" aria-label="ماه بعد">›</button></div>
+    <div class="chips">${chips}</div>
+    <div class="mhead">${AT.roozHafte.map(w => `<div>${w.slice(0, 3)}</div>`).join("")}</div>
+    <div class="grid">${cells}</div>
+    <div class="legend"><span>خوب</span><span class="ramp"></span><span>بد</span></div>
+    <p class="note">عدد بزرگ روز شمسی است و عدد کوچک روز قمری.
+      روی هر روز بزنید تا بازش کند. با چیپ‌های بالا می‌توانید ماه را بر اساس
+      یک کار خاص رنگ کنید.</p>`;
+}
+
+function jumpMonth(delta) {
+  const [jy, jm, jd] = jdnToJ(cur);
+  let y = jy, m = jm + delta;
+  if (m > 12) { m = 1; y++; }
+  if (m < 1) { m = 12; y--; }
+  const first = jToJdn(y, m, 1);
+  const len = (m === 12 ? jToJdn(y + 1, 1, 1) : jToJdn(y, m + 1, 1)) - first;
+  cur = first + Math.min(jd, len) - 1;
+  render();
+}
+
+/* ---------- ابزار ----------
+   تبدیل تاریخ دوطرفه است: هر کدام از سه تقویم را که عوض کنید، دوتای دیگر
+   به‌روز می‌شوند. عمداً فقط **آن دو تای دیگر** بازنویسی می‌شوند، نه خودِ
+   فیلدی که دارید تایپش می‌کنید — وگرنه مکان‌نما می‌پرد. */
+let tv = null;
+const toEn = s => String(s).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+const num = id => parseInt(toEn($(id).value), 10);
+const opt = (arr, sel) => arr.map((n, i) =>
+  `<option value="${i + 1}"${i + 1 === sel ? " selected" : ""}>${n}</option>`).join("");
+
+function viewAbzar() {
+  if (!tv) tv = { jdn: cur, birth: [1370, 1, 1] };
+  const j = tv.jdn;
+  const [jy, jm, jd] = jdnToJ(j), [gy, gm, gd] = jdnToG(j), h = jdnToHijri(j);
+
+  const row = (id, lab, y, months, mm, d) => `
+    <div class="trow"><label>${lab}</label>
+      <input id="${id}y" value="${fa(y)}" inputmode="numeric" aria-label="سال">
+      <select id="${id}m">${opt(months, mm)}</select>
+      <input id="${id}d" value="${fa(d)}" inputmode="numeric" aria-label="روز">
+    </div>`;
+
+  return `
+    <div class="tool">
+      <h4>تبدیل تاریخ</h4>
+      ${row("sh-", "شمسی", jy, AT.mahShamsi, jm, jd)}
+      ${row("qa-", "قمری", h ? h[0] : "", AT.mahQamari, h ? h[1] : 1, h ? h[2] : "")}
+      ${row("mi-", "میلادی", gy, AT.mahMiladi, gm, gd)}
+      <div class="tout" id="c-out"></div>
+    </div>
+    <div class="tool">
+      <h4>محاسبه‌ی سن</h4>
+      ${row("b-", "تولد", tv.birth[0], AT.mahShamsi, tv.birth[1], tv.birth[2])}
+      <div class="tout" id="b-out"></div>
+    </div>`;
+}
+
+/* یک گروه را می‌خواند و به شماره‌ی روز جولیانی تبدیل می‌کند */
+function readGroup(src) {
+  const y = num("#" + src + "y"), m = +$("#" + src + "m").value, d = num("#" + src + "d");
+  if (!y || !d || d < 1 || d > 31) return null;
+  if (src === "sh-" || src === "b-") return jToJdn(y, m, d);
+  if (src === "mi-") return gToJdn(y, m, d);
+  return hijriToJdn(y, m, d);          /* قمری */
+}
+
+function writeGroup(src, y, m, d) {
+  $("#" + src + "y").value = y === null ? "" : fa(y);
+  $("#" + src + "m").value = m;
+  $("#" + src + "d").value = d === null ? "" : fa(d);
+}
+
+function syncFrom(src) {
+  const o = $("#c-out");
+  const j = readGroup(src);
+  if (j === null) { o.innerHTML = "تاریخ نامعتبر"; return; }
+  tv.jdn = j;
+
+  const [jy, jm, jd] = jdnToJ(j), [gy, gm, gd] = jdnToG(j), h = jdnToHijri(j);
+  if (src !== "sh-") writeGroup("sh-", jy, jm, jd);
+  if (src !== "mi-") writeGroup("mi-", gy, gm, gd);
+  if (src !== "qa-") {
+    if (h) writeGroup("qa-", h[0], h[1], h[2]);
+    else writeGroup("qa-", null, 1, null);
+  }
+
+  const emrooz = j === todayJdn();
+  o.innerHTML = `روز هفته: <b>${AT.roozHafte[weekday(j)]}</b>`
+    + (h ? "" : `<br><span style="color:var(--sorkh)">این تاریخ بیرون از جدول قمری است</span>`)
+    + (emrooz ? `<br>امروز` : "");
+}
+
+function renderAbzar() {
+  syncFrom("sh-");
+  ageFrom();
+}
+
+function ageFrom() {
+  const b = $("#b-out");
+  const by = num("#b-y"), bm = +$("#b-m").value, bd = num("#b-d");
+  if (!by || !bd) { b.innerHTML = "تاریخ نامعتبر"; return; }
+  tv.birth = [by, bm, bd];
+  const bj = jToJdn(by, bm, bd), tj = todayJdn();
+  if (bj > tj) { b.innerHTML = "تاریخ تولد در آینده است"; return; }
+  let y = 0, m = 0, cy = by, cm = bm;
+  while (jToJdn(cy + 1, cm, bd) <= tj) { cy++; y++; }
+  for (;;) {
+    let ny = cy, nm = cm + 1;
+    if (nm > 12) { nm = 1; ny++; }
+    if (jToJdn(ny, nm, bd) > tj) break;
+    cy = ny; cm = nm; m++;
+  }
+  const d = tj - jToJdn(cy, cm, bd);
+  b.innerHTML = `سن: <b>${fa(y)} سال و ${fa(m)} ماه و ${fa(d)} روز</b><br>
+    روزهای زندگی: <b>${fa(tj - bj)}</b> روز<br>
+    روز هفته‌ی تولد: <b>${AT.roozHafte[weekday(bj)]}</b>`;
+}
+
+/* ---------- برگه‌ها ---------- */
+function openSheet(title, html) {
+  $("#sheet-title").textContent = title;
+  $("#sheet-body").innerHTML = html;
+  $("#sheet").hidden = false;
+}
+function openDaste(e, di) {
+  const name = AT.dasteha[di];
+  const parts = e.a.map(a => [a, sahm(a, name)]).filter(x => x[1] !== 0);
+  openSheet(name, parts.length
+    ? parts.map(([a, n]) => `<div class="hokm">
+        <div class="top"><span class="tag ${n > 0 ? "k" : "b"}">${n > 0 ? "خوب" : "بد"} ${fa(Math.abs(n))}</span>
+        <span>چون: ${a[3]}</span></div><p>${a[5]}</p>
+        <div class="src">${R.manabe[a[6]] || a[6]}</div></div>`).join("")
+      + `<div class="jam"><span>نمره‌ی این دسته</span><b>${fa(e.s.ds[di])}</b></div>`
+    : `<p style="color:var(--morakkab2);padding:1rem 0">امروز هیچ حکمی درباره‌ی «${name}» نیست.</p>`);
+}
+
+/* ---------- رندر ---------- */
+function render() {
+  const full = isFull();
+  const e = getDay(cur), day = e.day;
+  $("#d1").textContent = `${AT.roozHafte[day.w]} ${fa(day.sh[2])} ${AT.mahShamsi[day.sh[1] - 1]} ${fa(day.sh[0])}`;
+  $("#d2").textContent = (day.q[0] ? `${fa(day.q[0])} ${AT.mahQamari[day.q[1] - 1]} ${fa(day.q[2])}  ·  ` : "")
+    + `${fa(day.mi[0])}-${fa(pad2(day.mi[1]))}-${fa(pad2(day.mi[2]))}`;
+  /* فلش‌ها در حالت قفل هم کار می‌کنند و فقط **محتوای** روزهای دیگر بسته
+     است. دلیلش کلید مخفی است: اگر تاریخ جابه‌جا نشود، رسیدن به پانزده
+     شعبان ممکن نیست و کلید سالی یک روز قابل استفاده می‌شود. */
+  $("#prev").disabled = false;
+  $("#next").disabled = false;
+  $("#tab-rooz").classList.toggle("on", view === "rooz");
+  $("#tab-mah").classList.toggle("on", view === "mah");
+  $("#tab-abzar").classList.toggle("on", view === "abzar");
+
+  /* نوار وضعیت دوره‌ی آزمایشی */
+  const n = trialLeft(), bar = $("#vaziat"), u = unlockLeft();
+  if (u > 0) {
+    bar.hidden = false;
+    bar.className = "vaziat";
+    bar.textContent = (ES.pas_az_kharid || "نسخه‌ی کامل فعال است")
+      + " — " + fa(u) + " روز";
+  }
+  else if (isPaid()) { bar.hidden = true; }
+  else if (n > 0) {
+    bar.hidden = false;
+    bar.className = "vaziat";
+    bar.textContent = n === 1 ? ES.azmayesh_akhar
+                              : ES.azmayesh_matn.replace("{n}", fa(n));
+  } else {
+    bar.hidden = false;
+    bar.className = "vaziat tamam";
+    bar.textContent = ES.onvan + " — " + ES.dokme;
+  }
+
+  /* پانزده شعبان حتی در حالت قفل هم باز است. نه از سر سخاوت: قدم دوم کلید
+     مخفی روی بنرِ همان روز است و اگر صفحه‌ی قفل جایش را بگیرد، بنری نیست
+     که نگه داشته شود و کلید در حالت قفل — یعنی دقیقاً جایی که به آن
+     نیاز داریم — هرگز کار نمی‌کند. سالی یک روز است و چیزی به کسی
+     نمی‌بخشد. */
+  const locked = !full && view !== "admin"
+    && (view === "mah" || view === "abzar"
+        || (cur !== todayJdn() && !isKelid(day)));
+  $("#main").innerHTML = view === "admin" ? viewAdmin()
+                       : locked ? viewGhofl()
+                       : view === "rooz" ? viewRooz(e)
+                       : view === "mah" ? viewMah(e) : viewAbzar();
+  if (view === "abzar" && !locked) renderAbzar();
+  $("#main").scrollTop = 0;
+}
+
+$("#main").addEventListener("click", ev => {
+  /* قدم دومِ کلید از راه ضربه، روی بنر حال روز. اگر مجاز نباشد شمرده
+     می‌شود ولی کاری نمی‌کند — عمداً، تا تعداد ضربه از روی رفتار اپ
+     قابل حدس زدن نباشد. */
+  if (ev.target.closest && ev.target.closest(".banner")) {
+    if (zarbeShomar("banner") && gam2Mojaz()) adminBazKon();
+    return;
+  }
+  const row = ev.target.closest(".drow");
+  if (row) return openDaste(getDay(cur), +row.dataset.d);
+  const cell = ev.target.closest(".cell[data-j]");
+  if (cell) { cur = +cell.dataset.j; view = "rooz"; return render(); }
+  const chip = ev.target.closest(".chips button");
+  if (chip) { chosen = +chip.dataset.c; return render(); }
+  if (ev.target.id === "mprev") return jumpMonth(-1);
+  if (ev.target.id === "mnext") return jumpMonth(1);
+  if (ev.target.id === "sekiz-info")
+    return openSheet(R.sekiz_yilduz.onvan, R.sekiz_yilduz.tozih_boland.split("\n\n")
+      .map(p => `<p style="font-size:.92rem;line-height:1.95;margin:.9rem 0">${p}</p>`).join(""));
+  if (ev.target.id === "kharid") {
+    /* اینجا بعداً پرداخت کافه بازار وصل می‌شود. تا آن موقع پیغام می‌دهد،
+       و برای آزمایش با نگه داشتن دکمه اشتراک را روشن/خاموش می‌کند. */
+    try {
+      if (window.SaatKhoob && SaatKhoob.kharid) { SaatKhoob.kharid(); return; }
+    } catch (e) {}
+    openSheet(ES.onvan,
+      `<p style="font-size:.92rem;line-height:1.95;margin:1rem 0">
+         پرداخت هنوز وصل نشده است. بعد از آماده شدن حساب کافه بازار،
+         همین دکمه خرید اشتراک را انجام می‌دهد.</p>`);
+    return;
+  }
+  if (ev.target.id === "adm-baz") return admBaz();
+  if (ev.target.id === "adm-close") {
+    view = "rooz"; admPayam = null; cur = todayJdn(); return render();
+  }
+  const adb = ev.target.closest("[data-adm]");
+  if (adb) return admAmal(adb.dataset.adm);
+  if (ev.target.id === "more") {
+    hoursOpen = !hoursOpen;
+    $("#hlist").hidden = !hoursOpen;
+    ev.target.textContent = hoursOpen ? "بستن" : "همه‌ی بیست‌وچهار ساعت";
+  }
+});
+/* کدام گروه ویرایش شد؟ فقط همان مبدأ تبدیل می‌شود تا مکان‌نما نپرد. */
+function onToolEdit(ev) {
+  if (view !== "abzar") return;
+  const id = (ev.target.id || "");
+  const src = ["sh-", "qa-", "mi-", "b-"].find(p => id.startsWith(p));
+  if (!src) return;
+  if (src === "b-") ageFrom(); else syncFrom(src);
+}
+$("#main").addEventListener("input", onToolEdit);
+$("#main").addEventListener("change", onToolEdit);
+
+$("#settings").addEventListener("click", ev => {
+  const b = ev.target.closest("button"); if (!b) return;
+  if (b.dataset.fs) { fs = b.dataset.fs; set("sk_fs", fs); }
+  if (b.dataset.th) { theme = b.dataset.th; set("sk_theme", theme); }
+  applySettings();
+  render();
+});
+
+/* ---------- کلید مخفی: دو راه برای هر قدم ----------
+   نگه داشتنِ طولانی روی اندروید **قابل اعتماد نیست**. وب‌ویو هر لمسی را
+   به تشخیص‌دهنده‌ی حرکت می‌دهد و هر وقت تصمیم بگیرد این یک «لمس طولانی» یا
+   شروع اسکرول است، `touchcancel` می‌فرستد و شمارش ما وسط راه می‌میرد — بی
+   آنکه هیچ خطایی بدهد. روی یک گوشی کار می‌کند و روی گوشیِ بغلی نه. (همین
+   اتفاق روی گوشی خودِ کاربر افتاد، دو بار.)
+
+   پس هر قدم **دو راه** دارد و هر کدام جواب داد کافی است:
+     الف) ده ثانیه نگه داشتن
+     ب)  هفت ضربه‌ی پشت سر هم (فاصله‌ی کمتر از سه ثانیه)
+   ضربه از دستِ تشخیص‌دهنده‌ی حرکت در امان است چون رویداد `click` همیشه
+   می‌رسد — همان چیزی که گیتِ قدیمیِ پنج‌ضربه‌ای با آن کار می‌کرد.
+
+   بازخوردِ نگه داشتن از ثانیه‌ی ۱.۵ شروع می‌شود، نه دیرتر: اگر محو شدن را
+   نبینید یعنی اصلاً لمس به ما نرسیده و باید سراغ راه ضربه‌ای بروید. */
+const FESHAR = 10000;
+const FESHAR_NESHAN = 1500;      /* از این لحظه محو شدن شروع می‌شود */
+const FESHAR_LARZESH = 60;       /* بیش از این جابه‌جایی یعنی انصراف */
+const ZARBE_LAZEM = 7, ZARBE_FASELE = 3000;
+let lp = null, lpZad = null;
+let zarbe = 0, zarbeKey = null, zarbeT = 0;
+let gam1T = 0;                   /* لحظه‌ی انجام قدم اولِ کلید */
+
+/* شمارنده‌ی ضربه. برای هر هدف جداگانه می‌شمارد و با عوض شدن هدف یا با
+   فاصله‌ی زیاد از صفر شروع می‌کند. */
+function zarbeShomar(key) {
+  const now = Date.now();
+  zarbe = (key === zarbeKey && now - zarbeT < ZARBE_FASELE) ? zarbe + 1 : 1;
+  zarbeKey = key;
+  zarbeT = now;
+  if (zarbe >= ZARBE_LAZEM) { zarbe = 0; zarbeKey = null; return true; }
+  return false;
+}
+
+function lpStop() {
+  if (!lp) return;
+  clearTimeout(lp.t); clearInterval(lp.fade);
+  lp.el.style.opacity = "";
+  lp = null;
+}
+
+function lpAghaz(el, x, y, kar) {
+  lpStop();
+  const t0 = Date.now();
+  lp = { el, x, y, fade: 0, t: 0 };
+  lp.fade = setInterval(() => {
+    const p = (Date.now() - t0 - FESHAR_NESHAN) / (FESHAR - FESHAR_NESHAN);
+    el.style.opacity = p > 0 ? String(1 - .85 * Math.min(1, p)) : "";
+  }, 80);
+  lp.t = setTimeout(() => { lpStop(); lpZad = el; kar(); }, FESHAR);
+}
+
+/* شنونده روی یک **ظرف ثابت** می‌نشیند و `peyda` از روی هدفِ لمس می‌گوید
+   کدام المان باید نگه داشته شود (یا null). دلیلش این است که نمای روز با
+   هر رندر از نو ساخته می‌شود؛ شنونده‌ی چسبیده به خود بنر با اولین رندر
+   از بین می‌رفت.
+
+   شنونده‌ها هم لمسی‌اند هم اشاره‌گری هم ماوسی، چون معلوم نیست وب‌ویوِ
+   هر گوشی کدام را می‌فرستد. اگر دوتاشان با هم بیایند، گاردِ «همین المان
+   را دارم نگه می‌دارم» از شروع دوباره جلوگیری می‌کند. */
+function lpBind(zarf, peyda, kar) {
+  const begin = (hadaf, x, y) => {
+    const el = peyda(hadaf);
+    if (!el) { lpStop(); return; }
+    if (lp && lp.el === el) return;          /* همین نگه داشتن ادامه دارد */
+    lpAghaz(el, x, y, kar);
+  };
+  const harekat = (x, y) => {
+    if (!lp) return;
+    if (Math.abs(x - lp.x) > FESHAR_LARZESH
+     || Math.abs(y - lp.y) > FESHAR_LARZESH) lpStop();
+  };
+
+  zarf.addEventListener("touchstart", ev => {
+    const t = ev.touches[0];
+    begin(ev.target, t.clientX, t.clientY);
+  }, { passive: true });
+  zarf.addEventListener("touchmove", ev => {
+    const t = ev.touches[0];
+    harekat(t.clientX, t.clientY);
+  }, { passive: true });
+  zarf.addEventListener("touchend", lpStop);
+  zarf.addEventListener("touchcancel", lpStop);
+
+  zarf.addEventListener("pointerdown", ev => begin(ev.target, ev.clientX, ev.clientY));
+  zarf.addEventListener("pointermove", ev => harekat(ev.clientX, ev.clientY));
+  zarf.addEventListener("pointerup", lpStop);
+  zarf.addEventListener("pointercancel", lpStop);
+
+  zarf.addEventListener("mousedown", ev => begin(ev.target, ev.clientX, ev.clientY));
+  zarf.addEventListener("mouseup", lpStop);
+
+  /* منوی «کپی/انتخاب» اندروید نباید بالا بیاید، وگرنه لمس را می‌دزدد */
+  zarf.addEventListener("contextmenu", ev => { if (lp) ev.preventDefault(); });
+}
+
+/* دو کارِ کلید، تا هم نگه داشتن و هم ضربه بتوانند صدایشان بزنند */
+function adminParesh() {                 /* قدم اول: رفتن به پانزده شعبان */
+  gam1T = Date.now();
+  cur = baediShaban(todayJdn());
+  view = "rooz";
+  render();
+}
+function adminBazKon() {                 /* قدم دوم: باز کردن صفحه‌ی مدیر */
+  gam1T = 0;
+  view = "admin";
+  admPayam = null;
+  render();
+}
+
+/* ---------- اینکه قدم دوم مجاز است یا نه ----------
+   دو شرط، و هرکدام برقرار باشد کافی است:
+     الف) تاریخِ روی صفحه واقعاً پانزده شعبان است — شرطِ اصلی
+     ب)  قدم اول همین دو دقیقه‌ی پیش انجام شده
+
+   شرط (ب) عمداً اضافه شد. نسخه‌ی قبل فقط (الف) را داشت و روی گوشی کاربر
+   قدم دوم اصلاً کار نکرد، در حالی که همان حرکت روی دکمه‌ی «امروز» بی‌عیب
+   کار می‌کرد — یعنی ایراد از جایی در لایه‌ی DOM یا رویدادِ همان گوشی بود
+   که از اینجا دیده نمی‌شد. حالا کلید به چیزی که نمی‌توانم ببینم وابسته
+   نیست: دو بار همان حرکت روی همان دکمه کافی است. قفل واقعی همچنان
+   کدِ هفت‌رقمی است، نه این دو حرکت. */
+const GAM1_ETEBAR = 120000;              /* دو دقیقه */
+const gam1Faal = () => Date.now() - gam1T < GAM1_ETEBAR;
+const gam2Mojaz = () =>
+  gam1Faal() || (view === "rooz" && isKelid(getDay(cur).day));
+
+/* یک حرکت، دو کار: بار اول می‌پرد به پانزده شعبان، بار دوم صفحه را باز
+   می‌کند. برای همین روی دکمه‌ی «امروز» کافی است دو بار پشت سر هم بزنید. */
+function adminGam() {
+  if (gam2Mojaz()) adminBazKon(); else adminParesh();
+}
+
+/* بنر هم همان کار را می‌کند، ولی عمداً **فقط** قدم دوم: روی روزی که
+   پانزده شعبان نیست و قدم اولی هم در کار نبوده، هیچ اتفاقی نمی‌افتد. */
+const banarHadaf = hadaf =>
+  (view === "rooz" && hadaf && hadaf.closest && hadaf.closest(".banner"))
+    ? hadaf.closest(".banner") : null;
+
+lpBind($("#today"), () => (view === "admin" ? null : $("#today")), adminGam);
+lpBind($("#main"), banarHadaf, () => { if (gam2Mojaz()) adminBazKon(); });
+$("#city").addEventListener("change", ev => {
+  loc = AT.shahrha[+ev.target.value];
+  set("sk_city", loc.n);
+  clearCache();
+  render();
+});
+$("#gear").onclick = () => {
+  const s = $("#settings"); s.hidden = !s.hidden;
+  $("#gear").classList.toggle("on", !s.hidden);
+};
+$("#prev").onclick = () => { cur--; render(); };
+$("#next").onclick = () => { cur++; render(); };
+$("#today").onclick = () => {
+  /* اگر همین الان ده ثانیه نگه داشته شده بود، ضربه‌ی بعدش را نشمار */
+  if (lpZad === $("#today")) { lpZad = null; return; }
+  /* راه ضربه‌ای: هفت ضربه‌ی پیاپی. بار اول می‌پرد، بار دوم باز می‌کند. */
+  if (zarbeShomar("today")) return adminGam();
+  cur = todayJdn(); render();
+};
+$("#tab-rooz").onclick = () => { view = "rooz"; render(); };
+$("#tab-mah").onclick = () => { view = "mah"; render(); };
+$("#tab-abzar").onclick = () => { view = "abzar"; render(); };
+$("#sheet-close").onclick = () => { $("#sheet").hidden = true; };
+$("#sheet").onclick = ev => { if (ev.target.id === "sheet") $("#sheet").hidden = true; };
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") $("#sheet").hidden = true;
+  /* داخل فیلدها و در صفحه‌ی مدیر، فلش‌ها مال خودِ فیلدند */
+  const dar = ev.target && /^(INPUT|SELECT|TEXTAREA)$/.test(ev.target.tagName || "");
+  if (dar || view === "admin") return;
+  if (ev.key === "ArrowRight") { cur--; render(); }
+  if (ev.key === "ArrowLeft") { cur++; render(); }
+});
+
+$("#city").innerHTML = AT.shahrha.map((s, i) =>
+  `<option value="${i}"${s.n === loc.n ? " selected" : ""}>${s.n}</option>`).join("");
+applySettings();
+render();
+</script>
+
+<script>
+/* ثبت سرویس‌ورکر. اگر هاست HTTPS نباشد کار نمی‌کند و اپ باز هم اجرا
+   می‌شود، فقط آفلاین نخواهد بود — پس عمداً هیچ خطایی نشان نمی‌دهیم. */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("./sw.js").catch(function () {});
+  });
+}
+</script>
